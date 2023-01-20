@@ -1,6 +1,14 @@
+import Attendance from '@/components/views/Attendance'
+import AttendanceList from '@/components/views/AttendanceList'
+import AttendanceReport from '@/components/views/AttendanceReport'
+import DownloadData from '@/components/views/DownloadData'
+import EditEmployee from '@/components/views/EditEmployee'
+import GateAttendance from '@/components/views/GateAttendance'
+import NewEntry from '@/components/views/NewEntry'
+import UploadData from '@/components/views/UploadData'
+
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 // import Image from 'next/image'
 // import Dashboard from '@/components/Dashboard'
 
@@ -8,6 +16,17 @@ export default function ViewPage() {
 
   const router = useRouter()
   const { view } = router.query
+
+  const allViews = {
+    "attendance": <Attendance/>,
+    "new-entry": <NewEntry/>,
+    "edit-employee": <EditEmployee/>,
+    "attendance-list": <AttendanceList/>,  
+    "upload-data": <UploadData/>,
+    "download-data": <DownloadData/>,
+    "attendance-report": <AttendanceReport/>,
+    "gate-attendance": <GateAttendance/>
+  }
 
   return (
     <>
@@ -18,7 +37,7 @@ export default function ViewPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {/* <Dashboard/> */}
-      <main>{view}</main>
+      <main>{allViews[view]}</main>
     </>
   )
 }

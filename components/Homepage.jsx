@@ -18,9 +18,9 @@ const Homepage = () => {
 
   return (
     <main className="w-screen h-screen bg-gradient-to-b from-accent to-dark flex flex-col justify-start items-center p-8 gap-10 text-white">
-      <h1 className="text-3xl font-bold flex gap-2">
-        <span className="text-pink">Smart</span>
-        <span>Attendance</span>
+      <h1 className="text-3xl font-bold flex gap-2 mt-10">
+        <span className="text-pink">Face</span>
+        <span>In</span>
       </h1>
       <form
         onSubmit={login}
