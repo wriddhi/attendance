@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { SiStarship } from 'react-icons/si'
@@ -38,7 +39,7 @@ const Homepage = () => {
         required/>
         <button type="submit"
         className="bg-pink w-full p-3 rounded-md font-semibold">
-          LOGIN
+          <Link href={'/dashboard'}>LOGIN</Link> 
         </button>
       </form>
     </main>
