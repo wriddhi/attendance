@@ -8,8 +8,32 @@
   font-family: Josefin Sans, sans-serif;
 }
 
+/* For IE, Edge and Firefox */
+* {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* *::-webkit-scrollbar {
+  display: none;
+  -webkit-appearance: none;
+  width: 0px;
+  background: transparent;
+} */
+
+
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
+  }
+}
+
+
+@media screen and (max-width: 768px){
+  ::-webkit-scrollbar {
+      -webkit-appearance: none;
   }
 }

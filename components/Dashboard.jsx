@@ -51,9 +51,16 @@ const Dashboard = () => {
   ]
 
   return (
-    <main className="w-screen min-h-screen bg-dark flex flex-col justify-start items-start gap-3 text-white relative">
+    <main className="w-screen min-h-screen bg-dark flex flex-col justify-start items-start gap-3 text-white relative scrollbar-hide">
       
       <Header title={"Home"}/>
+      <section className="w-full grid grid-cols-2 p-3 gap-3">
+        {
+          Cards.map((card, index) => (
+            <Card key={index} title={card.title} icon={card.icon}/>
+          ))
+        }
+      </section>
       <section className="w-full grid grid-cols-2 p-3 gap-3">
         {
           Cards.map((card, index) => (
