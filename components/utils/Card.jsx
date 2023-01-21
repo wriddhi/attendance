@@ -7,7 +7,7 @@ const Card = ({ title, icon }) => {
   
   return (
     <Link href={`/dashboard/${route}`}>
-      <div className='bg-accent aspect-square rounded-md flex flex-col items-center justify-center gap-4 p-2 group'>
+      <div className='bg-accent w-full h-full aspect-square rounded-md flex flex-col items-center justify-center gap-4 p-2 group'>
         <span>{icon}</span>
         <span className='text-xl font-bold text-center transition-all group-hover:text-pink'>{title}</span>
       </div>

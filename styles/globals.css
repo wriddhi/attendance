@@ -8,20 +8,17 @@
   font-family: Josefin Sans, sans-serif;
 }
 
-/* For IE, Edge and Firefox */
-* {
+.scrollbar-hide {
   -ms-overflow-style: none;
-  /* IE and Edge */
   scrollbar-width: none;
-  /* Firefox */
 }
 
-/* *::-webkit-scrollbar {
-  display: none;
-  -webkit-appearance: none;
-  width: 0px;
-  background: transparent;
-} */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none !important;
+  -webkit-appearance: none !important;
+  width: 0px !important;
+  background: transparent !important;
+}
 
 
 
