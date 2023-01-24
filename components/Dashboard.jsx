@@ -7,7 +7,11 @@ import {
   ArrowUpOnSquareIcon,
   ArrowDownOnSquareIcon,
   ClipboardDocumentCheckIcon,
-  FingerPrintIcon
+  FingerPrintIcon,
+  DocumentArrowUpIcon,
+  CursorArrowRippleIcon,
+  CheckBadgeIcon,
+  PaperAirplaneIcon
 } from '@heroicons/react/24/outline'
 
 import Card from '@/components/utils/Card'
@@ -47,6 +51,22 @@ const Dashboard = () => {
     {
       title: "Gate Attendance",
       icon: <FingerPrintIcon className='h-10 w-10 text-white transition-all group-hover:text-pink'/>
+    },
+    {
+      title: "Export Attendance",
+      icon: <DocumentArrowUpIcon className='h-10 w-10 text-white transition-all group-hover:text-pink'/>
+    },
+    {
+      title: "Live Report",
+      icon: <CursorArrowRippleIcon className='h-10 w-10 text-white transition-all group-hover:text-pink'/>
+    },
+    {
+      title: "Verify Attendance",
+      icon: <CheckBadgeIcon className='h-10 w-10 text-white transition-all group-hover:text-pink'/>
+    },
+    {
+      title: "Leave Application",
+      icon: <PaperAirplaneIcon className='h-10 w-10 text-white transition-all group-hover:text-pink'/>
     }
   ]
 
@@ -55,11 +75,6 @@ const Dashboard = () => {
       
       <Header title={"Home"}/>
       <section className="w-full grid grid-cols-2 p-3 gap-3 scrollbar-hide">
-        {
-          Cards.map((card, index) => (
-            <Card key={index} title={card.title} icon={card.icon}/>
-          ))
-        }
         {
           Cards.map((card, index) => (
             <Card key={index} title={card.title} icon={card.icon}/>
