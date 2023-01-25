@@ -20,5 +20,7 @@
           },
         },	
       },	
-      plugins: [],
+      plugins: [
+        require("daisyui"),
+      ],
     }

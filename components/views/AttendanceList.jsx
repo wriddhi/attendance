@@ -1,8 +1,11 @@
 import React from 'react'
+import ViewHeader from '../utils/ViewHeader'
 
 const AttendanceList = () => {
   return (
-    <div>AttendanceList</div>
+    <main className='bg-dark min-h-screen'>
+      <ViewHeader title={"Attendance List"} />
+    </main>
   )
 }
 

@@ -24,7 +24,6 @@ const Camera = () => {
 
   return (
     <main className="bg-dark w-screen h-screen p-4 flex flex-col justify-center items-center gap-4">
-
       <section className="outline-2 outline-dashed outline-pink rounded-md mx-auto overflow-hidden aspect-square">
         {
           viewState === "video" ?
