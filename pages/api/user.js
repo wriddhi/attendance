@@ -36,6 +36,11 @@ const names = [
 
 export default function handler(req, res) {
 
+  if(req.method === 'GET' && req.query.filter == 'department') {
+    res.status(200).json(departments)
+    return
+  }
+
   const allWorkers = [
     ...departments.map((department, index) => {
       return (
