@@ -3,9 +3,13 @@ import AttendanceList from '@/components/views/AttendanceList'
 import AttendanceReport from '@/components/views/AttendanceReport'
 import DownloadData from '@/components/views/DownloadData'
 import EditEmployee from '@/components/views/EditEmployee'
+import ExportAttendance from '@/components/views/ExportAttendance'
 import GateAttendance from '@/components/views/GateAttendance'
+import LeaveApplication from '@/components/views/LeaveApplication'
+import LiveReport from '@/components/views/LiveReport'
 import NewEntry from '@/components/views/NewEntry'
 import UploadData from '@/components/views/UploadData'
+import VerifyAttendance from '@/components/views/VerifyAttendance'
 
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -25,7 +29,11 @@ export default function ViewPage() {
     "upload-data": <UploadData/>,
     "download-data": <DownloadData/>,
     "attendance-report": <AttendanceReport/>,
-    "gate-attendance": <GateAttendance/>
+    "gate-attendance": <GateAttendance/>,
+    "export-attendance": <ExportAttendance/>,
+    "live-report": <LiveReport/>,
+    "verify-attendance": <VerifyAttendance/>,
+    "leave-application": <LeaveApplication/>
   }
 
   return (
