@@ -76,7 +76,7 @@ const Attendance = () => {
             </form>
           </section>
           : 
-          <VideoCam/>
+          <VideoCam action={{label: "Upload"}} />
       }
     </main>
   )

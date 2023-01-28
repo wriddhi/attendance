@@ -3,7 +3,7 @@ import { StopCircleIcon } from "@heroicons/react/24/solid"
 import { useEffect, useState, useRef, useCallback } from "react"
 import Webcam from "react-webcam"
 
-const VideoCam = () => {
+const VideoCam = ({action}) => {
 
   const [capturing, setCapturing] = useState(false)
 
@@ -63,8 +63,8 @@ const VideoCam = () => {
   }
 
   return (
-    <section className="w-full flex flex-col gap-4 p-2">
-      <Webcam className={`w-11/12 mx-auto outline-dashed outline-pink rounded-md ${recordedChunks.length > 0 ? "hidden" : "flex"} `}
+    <section className="w-full h-screen flex flex-col gap-4 p-2">
+      <Webcam className={`w-11/12 h-1/2 mx-auto outline-dashed outline-pink rounded-md ${recordedChunks.length > 0 ? "hidden" : "flex"} `}
         ref={webcamRef}
         audio={false}
         height={720}
@@ -91,7 +91,7 @@ const VideoCam = () => {
       {recordedChunks.length > 0 && (
         <button onClick={handleDownload}
           className="w-11/12 outline-pink outline rounded-md p-2 mx-auto font-bold bg-accent text-pink flex justify-center items-center gap-2" >
-          Upload
+          {action.label}
           <CloudArrowUpIcon className="h-5 w-5" />
         </button>
       )}
