@@ -8,6 +8,10 @@
   font-family: Josefin Sans, sans-serif;
 }
 
+.toggle {
+  --tglbg: #0b2348;
+}
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;

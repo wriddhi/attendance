@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 import ViewHeader from '../utils/ViewHeader'
 
@@ -78,7 +79,9 @@ const LiveReport = () => {
         {
           shifts.map((shift, index) => {
             return (
-              <ShiftCard shift={shift} key={index} />
+              <Link className='w-full' href='/dashboard/attendance-list' key={index}>
+                <ShiftCard shift={shift} key={index} />
+              </Link>
             )
           })
         }
