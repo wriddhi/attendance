@@ -3,6 +3,7 @@ import Camera from '../Camera'
 import ViewHeader from '../utils/ViewHeader'
 import Link from 'next/link'
 import VideoCam from '../utils/VideoCam'
+import axios from 'axios'
 
 const Attendance = () => {
 
@@ -76,7 +77,17 @@ const Attendance = () => {
             </form>
           </section>
           : 
-          <VideoCam action={{label: "Upload"}} />
+          <VideoCam action={{label: "Upload", perform: async(video) => {
+            const formData = new FormData()
+            formData.append("video", video, "video2")
+            const post = await axios.post("/api/video", formData, {
+              headers : {
+                "Content-Type": "multipart/form"
+              }
+            })
+
+
+          }}} />
       }
     </main>
   )

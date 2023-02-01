@@ -89,7 +89,7 @@ const VideoCam = ({action}) => {
         </button>
       )}
       {recordedChunks.length > 0 && (
-        <button onClick={handleDownload}
+        <button onClick={() => {action.perform(new Blob(recordedChunks))}}
           className="w-11/12 outline-pink outline rounded-md p-2 mx-auto font-bold bg-accent text-pink flex justify-center items-center gap-2" >
           {action.label}
           <CloudArrowUpIcon className="h-5 w-5" />
