@@ -75,7 +75,6 @@ const Attendance = () => {
                   </Link>
                 </button>
                 <button type='submit' className='w-full bg-pink text-white p-3 rounded-md font-bold' >
-
                   Confirm
                 </button>
               </div>
@@ -87,11 +86,13 @@ const Attendance = () => {
               const formData = new FormData();
               formData.append('video', video);
               formData.append('submit', 'submit');
-              fetch(`https://ecstatic-firefly-49096.pktriot.net/att/upload.php`, {
-                /// do not change cotation (`) , not usw (') 
-                method: 'POST',
-                body: formData
-              })
+              // await fetch(`https://ecstatic-firefly-49096.pktriot.net/att/upload.php`, {
+              //   /// do not change cotation (`) , not usw (') 
+              //   method: 'POST',
+              //   body: formData
+              // })
+
+              window.location.href = `https://ecstatic-firefly-49096.pktriot.net/att/index.php`
             }
           }} />
       }
