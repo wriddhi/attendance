@@ -75,25 +75,25 @@ const Attendance = () => {
                   </Link>
                 </button>
                 <button type='submit' className='w-full bg-pink text-white p-3 rounded-md font-bold' >
-                   
+
                   Confirm
                 </button>
               </div>
             </form>
           </section>
-          : 
-          <VideoCam action={{label: "Upload", perform: async(video) => {
-            const formData = new FormData();
-            formData.append('video', video);
-            formData.append('submit', 'submit');
-            fetch(`https://a8af-2405-201-8014-99d0-64fe-924a-3f20-b317.in.ngrok.io/att/upload.php`, {
-            /// do not change cotation (`) , not usw (') 
-            method: 'POST',
-              body: formData
-            });
-
-
-          }}} />
+          :
+          <VideoCam action={{
+            label: "Upload", perform: async (video) => {
+              const formData = new FormData();
+              formData.append('video', video);
+              formData.append('submit', 'submit');
+              fetch(`https://ecstatic-firefly-49096.pktriot.net/att/upload.php`, {
+                /// do not change cotation (`) , not usw (') 
+                method: 'POST',
+                body: formData
+              })
+            }
+          }} />
       }
     </main>
   )
