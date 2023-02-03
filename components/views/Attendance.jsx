@@ -20,6 +20,10 @@ const Attendance = () => {
     console.log('Proceeding to click photo')
     setStage(2)
   }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    window.location.href = "https://4e9d-2405-201-8014-99d0-2898-ac7b-66d1-cbed.in.ngrok.io/att/";
+  };
 
   return (
     <main className='w-screen min-h-screen bg-dark'>
@@ -70,7 +74,8 @@ const Attendance = () => {
                     Cancel
                   </Link>
                 </button>
-                <button type='submit' className='w-full bg-pink text-white p-3 rounded-md font-bold'>
+                <button type='submit' className='w-full bg-pink text-white p-3 rounded-md font-bold' >
+                   
                   Confirm
                 </button>
               </div>
@@ -78,13 +83,14 @@ const Attendance = () => {
           </section>
           : 
           <VideoCam action={{label: "Upload", perform: async(video) => {
-            const formData = new FormData()
-            formData.append("video", video, "video2")
-            const post = await axios.post("/api/video", formData, {
-              headers : {
-                "Content-Type": "multipart/form"
-              }
-            })
+            const formData = new FormData();
+            formData.append('video', video);
+            formData.append('submit', 'submit');
+            fetch(`https://a8af-2405-201-8014-99d0-64fe-924a-3f20-b317.in.ngrok.io/att/upload.php`, {
+            /// do not change cotation (`) , not usw (') 
+            method: 'POST',
+              body: formData
+            });
 
 
           }}} />
