@@ -1,12 +1,15 @@
 import React, { useRef } from 'react'
 import { SiStarship } from 'react-icons/si'
 import { signIn } from "next-auth/react"
+import { useRouter } from 'next/router'
 
 const Homepage = () => {
 
   const usernameRef = useRef(null)
   const passwordRef = useRef(null)
   const errorRef = useRef(null)
+
+  const router = useRouter()
 
   const login = async (e) => {
     e.preventDefault()
@@ -22,11 +25,14 @@ const Homepage = () => {
 
       if (result.error) {
         errorRef.current.checked = true
+      } else {
+        router.push('/dashboard')
       }
 
     } catch (error) {
       console.log(error)
     }
+
   }
 
   return (

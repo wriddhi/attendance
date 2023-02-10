@@ -97,6 +97,10 @@ const Attendance = () => {
               }
 
               console.log("Uploaded video")
+
+              setTimeout(() => {
+              }, 3000)
+
               window.location.href = `${process.env.NEXT_PUBLIC_NGROK_BASE_URI}`
             }
           }} />

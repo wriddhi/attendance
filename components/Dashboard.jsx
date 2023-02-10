@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { 
   BeakerIcon, 
   NewspaperIcon, 
@@ -74,6 +74,12 @@ const Dashboard = () => {
 
   const session = useSession()
   console.log("Session => ", session.data)
+
+  useEffect(() => {
+    if(!session) {
+      router.push('/')
+    }
+  }, [])
 
   return (
     <main className="w-screen min-h-screen bg-dark flex flex-col justify-start items-start gap-3 text-white relative scrollbar-hide">
