@@ -16,6 +16,8 @@ import {
 
 import Card from '@/components/utils/Card'
 import Header from './utils/Header'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 const Dashboard = () => {
 
@@ -69,6 +71,9 @@ const Dashboard = () => {
       icon: <PaperAirplaneIcon className='h-10 w-10 text-white transition-all group-hover:text-pink'/>
     }
   ]
+
+  const session = useSession()
+  console.log("Session => ", session.data)
 
   return (
     <main className="w-screen min-h-screen bg-dark flex flex-col justify-start items-start gap-3 text-white relative scrollbar-hide">

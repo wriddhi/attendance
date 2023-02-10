@@ -1,19 +1,32 @@
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useRef } from 'react'
 import { SiStarship } from 'react-icons/si'
+import { signIn } from "next-auth/react"
 
 const Homepage = () => {
 
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const router = useRouter()
+  const usernameRef = useRef(null)
+  const passwordRef = useRef(null)
+  const errorRef = useRef(null)
 
-  const login = (e) => {
+  const login = async (e) => {
     e.preventDefault()
-    console.log("Login")
 
-    router.push('/dashboard')
+    try {
+
+      const result = await signIn('credentials', {
+        username: usernameRef.current.value,
+        password: passwordRef.current.value,
+        redirect: false,
+        // callbackUrl: '/dashboard'
+      })
+
+      if (result.error) {
+        errorRef.current.checked = true
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -24,22 +37,30 @@ const Homepage = () => {
       </h1>
       <form
         onSubmit={login}
-       className="w-11/12 flex flex-col justify-center items-center gap-6 my-auto">
-        <SiStarship className="scale-[4] mb-10 text-pink"/>
+        className="w-11/12 flex flex-col justify-center items-center gap-6 my-auto">
+        <SiStarship className="scale-[4] mb-10 text-pink" />
         <h2 className='text-2xl font-bold'>
           Login to continue
         </h2>
-        <input type="text" placeholder="Username" 
-        className="w-full p-3 mx-auto rounded-md bg-accent text-white outline-none border-none"
-        value={username} onChange={(e) => setUsername(e.target.value)}
-        required/>
-        <input type="password" placeholder="Password" 
-        className="w-full p-3 mx-auto rounded-md bg-accent text-white outline-none border-none"
-        value={password} onChange={(e) => setPassword(e.target.value)}
-        required/>
+        {/* Error popup */}
+        <input ref={errorRef} type="checkbox" id="my-modal-3" className="modal-toggle" />
+        <div className="modal">
+          <div className="modal-box bg-dark relative">
+            <label htmlFor="my-modal-3" className="btn btn-sm btn-circle bg-pink absolute right-2 top-2">✕</label>
+            <h3 className="text-lg font-bold">Invalid details!</h3>
+            <p className="py-4">Please make sure that the login details are correct!</p>
+          </div>
+        </div>
+        <input name='username' type="text" placeholder="Username" ref={usernameRef}
+          className="w-full p-3 mx-auto rounded-md bg-accent text-white outline-none border-none"
+          required />
+        <input name='password' type="password" placeholder="Password" ref={passwordRef}
+          className="w-full p-3 mx-auto rounded-md bg-accent text-white outline-none border-none"
+          required />
         <button type="submit"
-        className="bg-pink w-full p-3 rounded-md font-semibold">
-          <Link href={'/dashboard'}>LOGIN</Link> 
+          className="bg-pink w-full p-3 rounded-md font-semibold">
+          {/* <Link href={'/dashboard'}>LOGIN</Link> */}
+          LOGIN
         </button>
       </form>
     </main>

@@ -83,16 +83,21 @@ const Attendance = () => {
           :
           <VideoCam action={{
             label: "Upload", perform: async (video) => {
-              const formData = new FormData();
-              formData.append('video', video);
-              formData.append('submit', 'submit');
-              await fetch(`https://ecstatic-firefly-49096.pktriot.net/att/upload.php`, {
-                /// do not change cotation (`) , not usw (') 
-                method: 'POST',
-                body: formData
-              })
+              const formData = new FormData()
+              formData.append('video', video)
+              formData.append('submit', 'submit')
 
-              window.location.href = `https://ecstatic-firefly-49096.pktriot.net/att/index.php`
+              try {
+                await fetch(`${process.env.NEXT_PUBLIC_NGROK_BASE_URI}upload.php`, {
+                  method: 'POST',
+                  body: formData
+                })
+              } catch (error) {
+                
+              }
+
+              console.log("Uploaded video")
+              window.location.href = `${process.env.NEXT_PUBLIC_NGROK_BASE_URI}`
             }
           }} />
       }

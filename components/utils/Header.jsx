@@ -1,5 +1,6 @@
 import React from 'react'
 import { HiOutlineLogout } from 'react-icons/hi'
+import { signOut } from 'next-auth/react'
 
 const Header = ({title}) => {
   return (
@@ -8,7 +9,9 @@ const Header = ({title}) => {
      grid grid-cols-[1fr_8fr_1fr] place-items-center">
       <span></span>
       <span className='mx-auto'>{title}</span>
-      <HiOutlineLogout onClick={() => {alert("Logout")}}/>
+      <HiOutlineLogout onClick={() => {
+        signOut({redirect: true, callbackUrl: '/'})
+      }}/>
     </h1>
   )
 }
