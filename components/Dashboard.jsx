@@ -73,8 +73,7 @@ const Dashboard = () => {
   ]
 
   const session = useSession()
-  console.log("Session => ", session.data)
-
+  
   useEffect(() => {
     if(!session) {
       router.push('/')

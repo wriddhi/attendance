@@ -36,10 +36,12 @@ const names = [
 
 export default function handler(req, res) {
 
-  if(req.method === 'GET' && req.query.filter == 'department') {
+  if (req.method === 'GET' && req.query.filter == 'department') {
     res.status(200).json(departments)
     return
   }
+
+
 
   const allWorkers = [
     ...departments.map((department, index) => {
@@ -53,5 +55,17 @@ export default function handler(req, res) {
     })
   ]
 
+  if (req.method === 'GET' && req.query.employeeCode) {
+    const employeeCode = req.query.employeeCode
+    console.log("Code recieved => ", employeeCode)
+    if(employeeCode > allWorkers.length) {
+      res.status(404).json({"error" : "Employee not found"})
+      return
+    }
+    res.status(200).json({"details" : allWorkers[employeeCode - 1]})
+    return
+  }
+
   res.status(200).json(allWorkers)
+  return
 }

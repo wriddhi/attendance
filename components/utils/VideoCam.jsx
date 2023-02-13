@@ -63,8 +63,8 @@ const VideoCam = ({action}) => {
   }
 
   return (
-    <section className="w-full h-screen flex flex-col gap-4 p-2">
-      <Webcam className={`w-11/12 h-1/2 mx-auto outline-dashed outline-pink rounded-md ${recordedChunks.length > 0 ? "hidden" : "flex"} `}
+    <section className="w-11/12 mx-auto h-screen flex flex-col gap-4 p-2">
+      <Webcam className={`outline-dashed outline-pink rounded-md ${recordedChunks.length > 0 ? "hidden" : "flex"} `}
         ref={webcamRef}
         audio={false}
         height={720}
@@ -73,7 +73,7 @@ const VideoCam = ({action}) => {
       {
         recordedChunks.length > 0 && (
           <video loop
-          className={`w-11/12 mx-auto outline-dashed outline-pink rounded-md ${recordedChunks.length ? "visible" : "hidden"}`} 
+          className={`outline-dashed outline-pink rounded-md ${recordedChunks.length ? "visible" : "hidden"}`} 
           autoPlay src={URL.createObjectURL(new Blob(recordedChunks))} />
         )
       }

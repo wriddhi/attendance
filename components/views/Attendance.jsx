@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react'
-import Camera from '../Camera'
+import { useState, useEffect, useRef } from 'react'
 import ViewHeader from '../utils/ViewHeader'
 import Link from 'next/link'
 import VideoCam from '../utils/VideoCam'
@@ -34,11 +33,11 @@ const Attendance = () => {
             <form className='w-full flex flex-col gap-8 mt-8' onSubmit={proceedEntry} >
               <div className='w-full flex flex-col gap-2'>
                 <label className='text-slate-400'>Shift</label>
-                <select name="department" id="department" required
-                  className='w-full bg-accent rounded-md p-4 ring-2 ring-pink font-bold text-white ring-offset-pink'>
-                  <option disabled selected>Select a shift</option>
+                <select name="shift" id="shift" required
+                  className='select select-secondary w-full max-w-xs font-bold bg-accent text-white'>
+                  <option value="" disabled selected>Select a shift</option>
                   {
-                    ['A1', 'A2', 'B1', 'B2', 'G1', 'G2'].map(shift => (
+                    ['A1', 'A2', 'B1', 'B2', 'G1', 'G2', 'C1', 'C2'].map(shift => (
                       <option value={shift} key={shift}>{shift}</option>
                     ))
                   }
@@ -47,8 +46,8 @@ const Attendance = () => {
               <div className='w-full flex flex-col gap-2'>
                 <label className='text-slate-400'>Department</label>
                 <select name="department" id="department" required
-                  className='w-full bg-accent rounded-md p-4 ring-2 ring-pink font-bold text-white ring-offset-pink'>
-                  <option disabled selected>Select a department</option>
+                  className='select select-secondary w-full max-w-xs font-bold bg-accent text-white'>
+                  <option value="" disabled selected>Select a department</option>
                   {
                     departments.map(dept => (
                       <option value={dept} key={dept}>{dept}</option>
@@ -59,8 +58,8 @@ const Attendance = () => {
               <div className='w-full flex flex-col gap-2'>
                 <label className='text-slate-400'>Unit</label>
                 <select name="department" id="department" required
-                  className='w-full bg-accent rounded-md p-4 ring-2 ring-pink font-bold text-white ring-offset-pink'>
-                  <option disabled selected>Select a unit</option>
+                  className='select select-secondary w-full max-w-xs font-bold bg-accent text-white'>
+                  <option value="" disabled selected>Select a unit</option>
                   {
                     ["Main", "Option", "Option", "Option"].map((unit, index) => (
                       <option value={unit} key={index}>{unit}</option>
@@ -93,7 +92,7 @@ const Attendance = () => {
                   body: formData
                 })
               } catch (error) {
-                
+
               }
 
               console.log("Uploaded video")

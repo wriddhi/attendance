@@ -16,19 +16,19 @@ const LeaveApplication = () => {
         <form className='w-full flex flex-col gap-8 mt-8' onSubmit={applyForLeave} >
           <div className='w-full flex flex-col gap-2'>
             <label htmlFor='employeeCode' className='text-slate-400'>Employee Code</label>
-            <input type="text" name="employeeCode" id="employeeCode"
+            <input required type="text" name="employeeCode" id="employeeCode"
               className='w-full bg-accent rounded-md p-3 ring-2 ring-pink font-bold text-white ring-offset-pink' />
           </div>
           <div className='w-full flex flex-col gap-2'>
             <label htmlFor='employeeName' className='text-slate-400'>Employee Name</label>
-            <input type="text" name="employeeName" id="employeeName"
+            <input required type="text" name="employeeName" id="employeeName"
               className='w-full bg-accent rounded-md p-3 ring-2 ring-pink font-bold text-white ring-offset-pink' />
           </div>
           <div className='w-full flex flex-col gap-2'>
             <label className='text-slate-400'>Department</label>
             <select name="department" id="department" required
-              className='w-full bg-accent rounded-md p-4 ring-2 ring-pink font-bold text-white ring-offset-pink'>
-              <option disabled selected>Select a department</option>
+              className='select select-secondary w-full max-w-xs font-bold bg-accent text-white'>
+              <option value="" disabled selected>Select a department</option>
               {/* {
                 departments.map(dept => (
                   <option value={dept} key={dept}>{dept}</option>
@@ -39,8 +39,8 @@ const LeaveApplication = () => {
           <div className='w-full flex flex-col gap-2'>
             <label className='text-slate-400'>Type of Leave</label>
             <select name="department" id="department" required
-              className='w-full bg-accent rounded-md p-4 ring-2 ring-pink font-bold text-white ring-offset-pink'>
-              <option disabled selected>Select a type</option>
+              className='select select-secondary w-full max-w-xs font-bold bg-accent text-white'>
+              <option value="" disabled selected>Select a type</option>
               {
                 ["Paid", "Unpaid", "Authorized", "Unauthorized", "Sick", "Emergency", "Suspended", "Others"].map(dept => (
                   <option value={dept} key={dept}>{dept}</option>
@@ -50,7 +50,7 @@ const LeaveApplication = () => {
           </div>
           <div className='w-full flex flex-col gap-2'>
             <label className='text-slate-400'>Remarks</label>
-            <input type="text" name="remarks" id="remarks"
+            <input required type="text" name="remarks" id="remarks"
               className='w-full bg-accent rounded-md p-3 ring-2 ring-pink font-bold text-white ring-offset-pink' />
           </div>
           <div className='w-full flex justify-evenly items-center gap-4'>

@@ -1,13 +1,9 @@
+import Header from '@/components/utils/Header'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import ProfileView from '@/components/ProfileView'
 
-export default function Profile() {
-
-  const router = useRouter()
-
-  const { profile } = router.query
-
-  // const employee = fetch('/api/user?employeeCode='+profile).then((res) => res.json())
+export default function Profile({employee}) {
 
   return (
     <>
@@ -17,7 +13,18 @@ export default function Profile() {
         <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      Hey, I'm a profile page! for {profile}
+      <ProfileView details={employee.details}/>
     </>
   )
+}
+
+export async function getServerSideProps(req, res) {
+
+  const { query } = req
+  const code = query.profile[0]
+  const response = await fetch('http://localhost:3000/api/user?employeeCode='+code)
+  const employee = await response.json()
+  return {
+    props: {employee}, // will be passed to the page component as props
+  }
 }
