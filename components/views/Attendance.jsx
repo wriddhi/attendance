@@ -9,6 +9,10 @@ const Attendance = () => {
   const [departments, setDepartments] = useState([])
   const [stage, setStage] = useState(1)
 
+  const [shift, setShift] = useState(null)
+  const [department, setDepartment] = useState(null)
+  const [unit, setUnit] = useState(null)
+
   useEffect(() => {
     fetch('/api/user?filter=department').then(res => res.json()).then(dept => setDepartments(dept))
   }, [])
@@ -17,8 +21,12 @@ const Attendance = () => {
   const proceedEntry = (e) => {
     e.preventDefault()
     console.log('Proceeding to click photo')
+    console.log("Unit", unit)
+    console.log("Shift", shift)
+    console.log("Department", department)
     setStage(2)
   }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     window.location.href = "https://4e9d-2405-201-8014-99d0-2898-ac7b-66d1-cbed.in.ngrok.io/att/";
@@ -33,7 +41,7 @@ const Attendance = () => {
             <form className='w-full flex flex-col gap-8 mt-8' onSubmit={proceedEntry} >
               <div className='w-full flex flex-col gap-2'>
                 <label className='text-slate-400'>Shift</label>
-                <select name="shift" id="shift" required
+                <select onChange={(e) => {setShift(e.target.value)}} name="shift" id="shift" required
                   className='select select-secondary w-full max-w-xs font-bold bg-accent text-white'>
                   <option value="" disabled selected>Select a shift</option>
                   {
@@ -45,7 +53,7 @@ const Attendance = () => {
               </div>
               <div className='w-full flex flex-col gap-2'>
                 <label className='text-slate-400'>Department</label>
-                <select name="department" id="department" required
+                <select onChange={(e) => {setDepartment(e.target.value)}}  name="department" id="department" required
                   className='select select-secondary w-full max-w-xs font-bold bg-accent text-white'>
                   <option value="" disabled selected>Select a department</option>
                   {
@@ -57,7 +65,7 @@ const Attendance = () => {
               </div>
               <div className='w-full flex flex-col gap-2'>
                 <label className='text-slate-400'>Unit</label>
-                <select name="department" id="department" required
+                <select onChange={(e) => {setUnit(e.target.value)}}  name="unit " id="unit" required
                   className='select select-secondary w-full max-w-xs font-bold bg-accent text-white'>
                   <option value="" disabled selected>Select a unit</option>
                   {
@@ -84,23 +92,21 @@ const Attendance = () => {
             label: "Upload", perform: async (video) => {
               const formData = new FormData()
               formData.append('video', video)
+              formData.append('shift', shift)
+              formData.append('department', department)
+              formData.append('unit', unit)
               formData.append('submit', 'submit')
 
               try {
-                await fetch(`${process.env.NEXT_PUBLIC_NGROK_BASE_URI}upload.php`, {
+                await fetch(`${process.env.NEXT_PUBLIC_FLASK_BASE_URI}/predict`, {
                   method: 'POST',
                   body: formData
                 })
               } catch (error) {
-
+                console.log("Error => ", error)
               }
 
               console.log("Uploaded video")
-
-              setTimeout(() => {
-              }, 3000)
-
-              window.location.href = `${process.env.NEXT_PUBLIC_NGROK_BASE_URI}`
             }
           }} />
       }
