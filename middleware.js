@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 
 export function middleware(request) {
   
-  const session = request.cookies['_parsed'].get('next-auth.session-token')
+  const session = request.cookies['_parsed'].get('next-auth.session-token') || request.cookies['_parsed'].get('__Secure-next-auth.session-token')
 
   if(!session) {
     return NextResponse.redirect(new URL('/', request.url))
