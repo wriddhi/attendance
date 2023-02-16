@@ -15,7 +15,7 @@ export const authOptions = {
         // Add logic here to look up the user from the credentials supplied
         const { username, password } = credentials
 
-        const { data: users, error } = await supabase.from('users').select('*').eq('username', username).eq('password', password)
+        const { data: users, error } = await supabase.from('admins').select('*').eq('username', username).eq('password', password)
         console.log(users)
         if (error) {
           console.log("Error => ", error)
