@@ -131,7 +131,7 @@ const Attendance = () => {
 
             console.log(process.env.NEXT_PUBLIC_FLASK_BASE_URI)
             try {
-              await fetch(`${process.env.NEXT_PUBLIC_FLASK_BASE_URI}predict`, {
+              await fetch(`https://184.73.47.55:8080/predict`, {
                 method: 'POST',
                 headers: {
                   'Cors': 'no-cors'
