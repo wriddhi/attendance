@@ -2,14 +2,17 @@ import { useState, useEffect, useRef } from 'react'
 import ViewHeader from '../utils/ViewHeader'
 import Link from 'next/link'
 import VideoCam from '../utils/VideoCam'
+import Spinner from '../utils/Spinner'
 
 const Confirm = ({ id }) => {
 
   if (!id) {
-    return <div>No ID {id}</div>
+    return <div>No user found</div>
   }
 
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState(null)
+  const preview = user ? 'https://xsgames.co/randomusers/avatar.php?g=male' : null
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
   useEffect(() => {
     fetch(`/api/getUser?id=${id}`).then(res => res.json()).then(data => {
@@ -19,23 +22,74 @@ const Confirm = ({ id }) => {
   }, [])
 
   return (
-    <section className='w-11/12 mx-auto flex flex-col text-white'>
-      <span>
-        Employee Id : {id}
-      </span>
-      <span>
-        Employee Name : {user.fullname}
-      </span>
-      <span>
-        Employee Gender : {user.gender}
-      </span>
-      <span>
-        Employee Dob : {user.dob}
-      </span>
-      <span>
-        Employee Phone : {user.phone}
-      </span>
-
+    <section className='w-11/12 m-auto flex flex-col justify-center items-center gap-4 py-10'>
+      {user ? (
+        <>
+          <div className='text-white w-11/12 mx-auto mb-4'>
+            <img className='rounded-full h-32 mx-auto' src={preview} alt="Img" />
+          </div>
+          <div className='flex flex-col gap-1 w-11/12'>
+            <span className='text-pink font-bold text-lg'>Employee ID</span>
+            <span className='text-white bg-accent p-2 rounded-lg'>{user.id}</span>
+          </div>
+          <div className='flex flex-col gap-2 w-11/12'>
+            <span className='text-pink font-bold text-lg'>Employee Name</span>
+            <span className='text-white bg-accent p-2 rounded-lg'>{user.fullname}</span>
+          </div>
+          <div className='flex flex-col gap-2 w-11/12'>
+            <span className='text-pink font-bold text-lg'>Date of Birth</span>
+            <span className='text-white bg-accent p-2 rounded-lg'>
+              {user.dob.split('-')[2]} &nbsp;
+              {months[parseInt(user.dob.split('-')[1]) - 1]}, &nbsp;
+              {user.dob.split('-')[0]}
+            </span>
+          </div>
+          <div className='flex flex-col gap-2 w-11/12'>
+            <span className='text-pink font-bold text-lg'>Gender</span>
+            <span className='text-white bg-accent p-2 rounded-lg'>
+              {user.gender}
+            </span>
+          </div>
+          <div className='flex flex-col gap-2 w-11/12'>
+            <span className='text-pink font-bold text-lg'>Department</span>
+            <span className='text-white bg-accent p-2 rounded-lg'>
+              {user.dept_no}
+            </span>
+          </div>
+          <div className='flex flex-col gap-2 w-11/12'>
+            <span className='text-pink font-bold text-lg'>Phone</span>
+            <span className='text-white bg-accent p-2 rounded-lg'>
+              {user.phone}
+            </span>
+          </div>
+          <div className='flex flex-col gap-2 w-11/12'>
+            <span className='text-pink font-bold text-lg'>Date of Joining</span>
+            <span className='text-white bg-accent p-2 rounded-lg'>
+              {user.doj.split('-')[2]} &nbsp;
+              {months[parseInt(user.doj.split('-')[1]) - 1]}, &nbsp;
+              {user.doj.split('-')[0]}
+            </span>
+          </div>
+          <div className='flex flex-col gap-2 w-11/12'>
+            <span className='text-pink font-bold text-lg'>Occupation</span>
+            <select name="occupation" id="occupation" required
+              className='select select-secondary w-full font-bold bg-accent text-white'>
+              <option value="" disabled selected>Select occupation</option>
+              {
+                ['Operator', 'Helper', 'Others'].map(occupation => (
+                  <option value={occupation} key={occupation}>{occupation}</option>
+                ))
+              }
+            </select>
+          </div>
+          <div className='flex gap-4 items-center w-11/12 mt-8 font-bold'>
+              <button className='text-white outline outline-1 outline-white rounded-md p-2 w-4/6'>Cancel</button>
+              <button className='text-white bg-pink rounded-md p-2 w-4/6'>Confirm</button>
+          </div>
+        </>
+      ) : (
+        <Spinner size={100} />
+      )}
     </section>
   )
 }
@@ -75,7 +129,7 @@ const Attendance = () => {
             <div className='w-full flex flex-col gap-2'>
               <label className='text-slate-400'>Shift</label>
               <select onChange={(e) => { setShift(e.target.value) }} name="shift" id="shift" required
-                className='select select-secondary w-full max-w-xs font-bold bg-accent text-white'>
+                className='select select-secondary w-full font-bold bg-accent text-white'>
                 <option value="" disabled selected>Select a shift</option>
                 {
                   ['A1', 'A2', 'B1', 'B2', 'G1', 'G2', 'C1', 'C2'].map(shift => (
@@ -87,7 +141,7 @@ const Attendance = () => {
             <div className='w-full flex flex-col gap-2'>
               <label className='text-slate-400'>Department</label>
               <select onChange={(e) => { setDepartment(e.target.value) }} name="department" id="department" required
-                className='select select-secondary w-full max-w-xs font-bold bg-accent text-white'>
+                className='select select-secondary w-full font-bold bg-accent text-white'>
                 <option value="" disabled selected>Select a department</option>
                 {
                   departments.map(dept => (
@@ -99,7 +153,7 @@ const Attendance = () => {
             <div className='w-full flex flex-col gap-2'>
               <label className='text-slate-400'>Unit</label>
               <select onChange={(e) => { setUnit(e.target.value) }} name="unit " id="unit" required
-                className='select select-secondary w-full max-w-xs font-bold bg-accent text-white'>
+                className='select select-secondary w-full font-bold bg-accent text-white'>
                 <option value="" disabled selected>Select a unit</option>
                 {
                   ["Main", "Option", "Option", "Option"].map((unit, index) => (
@@ -131,7 +185,7 @@ const Attendance = () => {
 
             console.log(process.env.NEXT_PUBLIC_FLASK_BASE_URI)
             try {
-              await fetch(`https://184.73.47.55:8080/predict`, {
+              await fetch(`${process.env.NEXT_PUBLIC_FLASK_BASE_URI}predict`, {
                 method: 'POST',
                 headers: {
                   'Cors': 'no-cors'

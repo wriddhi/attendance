@@ -2,10 +2,12 @@ import { CloudArrowUpIcon, VideoCameraIcon } from "@heroicons/react/24/outline"
 import { StopCircleIcon } from "@heroicons/react/24/solid"
 import { useEffect, useState, useRef, useCallback } from "react"
 import Webcam from "react-webcam"
+import LoadingDots from "./LoadingDots"
 
-const VideoCam = ({action}) => {
+const VideoCam = ({ action }) => {
 
   const [capturing, setCapturing] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const webcamRef = useRef(null)
   const mediaRecorderRef = useRef(null)
@@ -73,26 +75,37 @@ const VideoCam = ({action}) => {
       {
         recordedChunks.length > 0 && (
           <video loop
-          className={`outline-dashed outline-pink rounded-md ${recordedChunks.length ? "visible" : "hidden"}`} 
-          autoPlay src={URL.createObjectURL(new Blob(recordedChunks))} />
+            className={`outline-dashed outline-pink rounded-md ${recordedChunks.length ? "visible" : "hidden"}`}
+            autoPlay src={URL.createObjectURL(new Blob(recordedChunks))} />
         )
       }
       {capturing ? (
         <button onClick={handleStopCaptureClick} className="bg-pink text-white font-bold w-11/12 p-2 mx-auto rounded-md flex justify-center items-center gap-2" >
           Stop
-          <StopCircleIcon className="h-5 w-5"/>
+          <StopCircleIcon className="h-5 w-5" />
         </button>
       ) : (
-        <button onClick={handleStartCaptureClick} className="bg-pink text-white font-bold w-11/12 p-2 mx-auto rounded-md flex justify-center items-center gap-2" > 
-        {recordedChunks.length ? "Retake" : "Start"} 
-        <VideoCameraIcon className="h-5 w-5" />
+        <button onClick={handleStartCaptureClick} className="bg-pink text-white font-bold w-11/12 p-2 mx-auto rounded-md flex justify-center items-center gap-2" >
+          {recordedChunks.length ? "Retake" : "Start"}
+          <VideoCameraIcon className="h-5 w-5" />
         </button>
       )}
       {recordedChunks.length > 0 && (
-        <button onClick={() => {action.perform(new Blob(recordedChunks))}}
+        <button onClick={() => {
+          setLoading(true)
+          action.perform(new Blob(recordedChunks))
+        }}
           className="w-11/12 outline-pink outline rounded-md p-2 mx-auto font-bold bg-accent text-pink flex justify-center items-center gap-2" >
-          {action.label}
-          <CloudArrowUpIcon className="h-5 w-5" />
+          {
+            loading ? (
+              <LoadingDots color="#fff" />
+            ) : (
+              <>
+                <p>{action.label}</p>
+                <CloudArrowUpIcon className="h-5 w-5" />
+              </>
+            )
+          }
         </button>
       )}
     </section>
