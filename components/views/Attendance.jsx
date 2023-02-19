@@ -188,7 +188,7 @@ const Attendance = () => {
             console.log("Uploading video to ", url)
             try {
               alert(url)
-
+              // Fetching
               await axios.post(url, formData, {
                 headers: {
                   'Cors': 'no-cors',
