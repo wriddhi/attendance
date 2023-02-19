@@ -4,11 +4,12 @@ import Link from 'next/link'
 import VideoCam from '../utils/VideoCam'
 import Spinner from '../utils/Spinner'
 import axios from 'axios'
+import Camera from '../utils/Camera'
 
 const Confirm = ({ id }) => {
 
   if (!id) {
-    return <div>No user found</div>
+    return <div className='w-full text-center my-10 mx-auto text-white'>User not found</div>
   }
 
   const [user, setUser] = useState(null)
@@ -178,46 +179,57 @@ const Attendance = () => {
       }
       {
         stage === 2 &&
-        <VideoCam action={{
-          label: "Upload", perform: async (video, loading, setLoading) => {
-            const formData = new FormData()
-            formData.append('video', video)
-            formData.append('submit', 'submit')
+        // <VideoCam action={{
+        //   label: "Upload", perform: async (video, loading, setLoading) => {
+        //     const formData = new FormData()
+        //     formData.append('video', video)
+        //     formData.append('submit', 'submit')
 
-            const url = `${process.env.NEXT_PUBLIC_FLASK_BASE_URI}predict`
-            console.log("Uploading video to ", url)
-            try {
-              alert(url)
-              // Fetching
-              await axios.post(url, formData, {
-                headers: {
-                  'Cors': 'no-cors',
-                }
-              }).then(data => {
-                console.log("Got data => ", data)
-                setLoading(false)
-                setId(data.data.id)
-                setStage(3)
-              })
-              // await fetch(url, {
-              //   method: 'POST',
-              //   headers: {
-              //     'Cors': 'no-cors',
-              //   },
-              //   body: formData
-              // }).then(data => data.json()).then(data => {
-              //   console.log("Got data => ", data)
-              //   setLoading(false)
-              //   setId(data.id)
-              //   setStage(3)
-              // })
-            } catch (error) {
-              console.log("Error => ", error)
-              alert("Failed to connect to server")
-              setLoading(false)
-            }
-            console.log("Uploaded video")
+        //     const url = `${process.env.NEXT_PUBLIC_FLASK_BASE_URI}predict`
+        //     console.log("Uploading video to ", url)
+        //     try {
+        //       alert(url)
+        //       // Fetching
+        //       await axios.post(url, formData, {
+        //         headers: {
+        //           'Cors': 'no-cors',
+        //         }
+        //       }).then(data => {
+        //         console.log("Got data => ", data)
+        //         setLoading(false)
+        //         setId(data.data.id)
+        //         setStage(3)
+        //       })
+        //     } catch (error) {
+        //       console.log("Error => ", error)
+        //       alert("Failed to connect to server")
+        //       setLoading(false)
+        //     }
+        //     console.log("Uploaded video")
+        //   }
+        // }} />
+        <Camera label="Upload" action={async (imgSrc) => {
+
+          const formData = new FormData()
+          formData.append('image', imgSrc)
+          formData.append('submit', 'submit')
+
+          const url = `${process.env.NEXT_PUBLIC_FLASK_BASE_URI}predict`
+          console.log("Uploading image to ", url)
+          try {
+            await axios.post(url, formData, {
+              headers: {
+                'Cors': 'no-cors'
+              },
+            }).then(data => {
+              console.log("Got data => ", data)
+              setId(data.data.id)
+              setStage(3)
+            })
+          } catch (error) {
+            console.log("Error => ", error)
           }
+          console.log("Uploaded image")
         }} />
       }
       {

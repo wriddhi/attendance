@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import ViewHeader from '../utils/ViewHeader'
-import VideoCam from '../utils/VideoCam'
+import Camera from '../utils/Camera'
+
+import axios from 'axios'
 
 const NewEntry = () => {
 
   const [stage, setStage] = useState(1)
+  const [employeeCode, setEmployeeCode] = useState('')
 
   function proceedEntry(e) {
     e.preventDefault()
@@ -23,6 +26,7 @@ const NewEntry = () => {
               <div className='w-full flex flex-col gap-2'>
                 <label htmlFor='employeeCode' className='text-slate-400'>Employee Code</label>
                 <input type="text" name="employeeCode" id="employeeCode" required
+                  onChange={(e) => { setEmployeeCode(e.target.value) }} value={employeeCode}
                   className='w-full bg-accent rounded-md p-3 ring-2 ring-pink font-bold text-white ring-offset-pink' />
               </div>
               <div className='w-full flex flex-col gap-2'>
@@ -33,7 +37,7 @@ const NewEntry = () => {
               <div className='w-full flex flex-col gap-2'>
                 <label className='text-slate-400'>Department</label>
                 <select name="department" id="department" required
-                  className='select select-secondary w-full max-w-xs font-bold bg-accent text-white'>
+                  className='select select-secondary w-full font-bold bg-accent text-white'>
                   <option value="" disabled selected>Choose an option</option>
                   {
                     ['IT', 'HR', 'Finance', 'Sales', 'Marketing'].map(dept => (
@@ -57,11 +61,27 @@ const NewEntry = () => {
           </section>
           :
           <section className={`${stage == 2 ? "flex" : "hidden"}`}>
-            <VideoCam action={{
-              label: "Upload", perform: async (video) => {
-                //@TODO :~ Add upload button click function here
-                console.log(video)
+            <Camera label={'Add'} action={async (imgSrc, loading, setLoading) => {
+              const formData = new FormData()
+              formData.append('image', imgSrc)
+              formData.append('id', employeeCode)
+              formData.append('submit', 'submit')
+
+              const url = `${process.env.NEXT_PUBLIC_FLASK_BASE_URI}add`
+              console.log("Uploading image to ", url)
+              try {
+                await axios.post(url, formData, {
+                  headers: {
+                    'Cors': 'no-cors'
+                  },
+                }).then(data => {
+                  console.log("Got data => ", data)
+                  setLoading(false)
+                })
+              } catch (error) {
+                console.log("Error => ", error)
               }
+              console.log("Uploaded image")
             }} />
           </section>
       }
