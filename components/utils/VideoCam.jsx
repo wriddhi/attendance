@@ -65,7 +65,7 @@ const VideoCam = ({ action }) => {
   }
 
   return (
-    <section className="w-11/12 mx-auto h-screen flex flex-col gap-4 p-2">
+    <section className="w-11/12 mx-auto h-60 flex flex-col gap-4 p-2">
       <Webcam className={`outline-dashed outline-pink rounded-md ${recordedChunks.length > 0 ? "hidden" : "flex"} `}
         ref={webcamRef}
         audio={false}
@@ -93,7 +93,7 @@ const VideoCam = ({ action }) => {
       {recordedChunks.length > 0 && (
         <button onClick={() => {
           setLoading(true)
-          action.perform(new Blob(recordedChunks))
+          action.perform(new Blob(recordedChunks), loading, setLoading)
         }}
           className="w-11/12 outline-pink outline rounded-md p-2 mx-auto font-bold bg-accent text-pink flex justify-center items-center gap-2" >
           {

@@ -3,6 +3,7 @@ import ViewHeader from '../utils/ViewHeader'
 import Link from 'next/link'
 import VideoCam from '../utils/VideoCam'
 import Spinner from '../utils/Spinner'
+import axios from 'axios'
 
 const Confirm = ({ id }) => {
 
@@ -178,26 +179,42 @@ const Attendance = () => {
       {
         stage === 2 &&
         <VideoCam action={{
-          label: "Upload", perform: async (video) => {
+          label: "Upload", perform: async (video, loading, setLoading) => {
             const formData = new FormData()
             formData.append('video', video)
             formData.append('submit', 'submit')
 
-            console.log(process.env.NEXT_PUBLIC_FLASK_BASE_URI)
+            const url = `${process.env.NEXT_PUBLIC_FLASK_BASE_URI}predict`
+            console.log("Uploading video to ", url)
             try {
-              await fetch(`${process.env.NEXT_PUBLIC_FLASK_BASE_URI}predict`, {
-                method: 'POST',
+              alert(url)
+
+              await axios.post(url, formData, {
                 headers: {
-                  'Cors': 'no-cors'
-                },
-                body: formData
-              }).then(data => data.json()).then(data => {
-                setId(data.id)
-                console.log(data)
+                  'Cors': 'no-cors',
+                }
+              }).then(data => {
+                console.log("Got data => ", data)
+                setLoading(false)
+                setId(data.data.id)
                 setStage(3)
               })
+              // await fetch(url, {
+              //   method: 'POST',
+              //   headers: {
+              //     'Cors': 'no-cors',
+              //   },
+              //   body: formData
+              // }).then(data => data.json()).then(data => {
+              //   console.log("Got data => ", data)
+              //   setLoading(false)
+              //   setId(data.id)
+              //   setStage(3)
+              // })
             } catch (error) {
               console.log("Error => ", error)
+              alert("Failed to connect to server")
+              setLoading(false)
             }
             console.log("Uploaded video")
           }
