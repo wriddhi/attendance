@@ -2,16 +2,17 @@ import { FunnelIcon, UserCircleIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import ViewHeader from '../utils/ViewHeader'
+import Spinner from '../utils/Spinner'
 
 const EmployeeCard = ({ employee }) => {
   return (
-    <Link href={`/employee/${employee.employeeCode}`}>
+    <Link href={`/employee/${employee.id}`}>
       <div className='w-full flex gap-4 p-4 bg-accent text-white rounded-md'>
         <UserCircleIcon className='h-12' />
         <section className='font-bold w-full flex flex-col'>
           <div className='flex justify-start items-center'>
-            <span> {employee.employeeName} </span>
-            <span className='text-slate-300 ml-auto font-light'> {employee.employeeCode} </span>
+            <span> {employee.fullname} </span>
+            <span className='text-slate-300 ml-auto font-light'> {employee.id} </span>
           </div>
           <div>
             <span className='text-pink text-xs'> {employee.department} </span>
@@ -72,9 +73,10 @@ const EditEmployee = () => {
 
   useEffect(() => {
     setLoading(true)
-    fetch('/api/user')
+    fetch('/api/getAllUsers')
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
         setData(data)
         setLoading(false)
       })
@@ -84,18 +86,22 @@ const EditEmployee = () => {
     <main className='bg-dark min-h-screen'>
       <ViewHeader title={"Edit Employee"} />
       <section className='w-full flex flex-col gap-4'>
-        {isLoading ? <p>Loading...</p> : null}
+        {isLoading &&
+          <section className='w-full flex justify-center items-center'>
+            <Spinner size={100} />
+          </section>
+        }
         {!isLoading && !data ? <p>No data</p> : null}
         {data ?
           <div className='w-full flex flex-col gap-4 p-4'>
             <SearchBar setSearch={setSearch} departments={departments} setFilter={setFilter} />
 
-            {(!search && filter === "all") && data.map((employee) => (<EmployeeCard employee={employee} key={employee.employeeCode} />))}
+            {(!search && filter === "all") && data.map((employee) => (<EmployeeCard employee={employee} key={employee.id} />))}
 
             {search && filter == "all" && data.map((employee) => {
               // return (employee.employeeName.toLowerCase().includes(search.toLowerCase()) ?
-              return (employee.employeeName.toLowerCase().indexOf(search.toLowerCase())==0 ?
-                <EmployeeCard employee={employee} key={employee.employeeCode} />
+              return (employee.employeeName.toLowerCase().indexOf(search.toLowerCase()) == 0 ?
+                <EmployeeCard employee={employee} key={employee.id} />
                 : null)
             })}
 
@@ -105,7 +111,7 @@ const EditEmployee = () => {
                   console.log(employee.employeeName)
                 }
                 return (employee.department === filter ?
-                  <EmployeeCard employee={employee} key={employee.employeeCode} />
+                  <EmployeeCard employee={employee} key={employee.id} />
                   : null)
               })
             }

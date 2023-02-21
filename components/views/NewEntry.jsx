@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import ViewHeader from '../utils/ViewHeader'
 import Camera from '../utils/Camera'
 
@@ -9,6 +10,15 @@ const NewEntry = () => {
 
   const [stage, setStage] = useState(1)
   const [employeeCode, setEmployeeCode] = useState('')
+  const [employeeName, setEmployeeName] = useState('')
+  const [department, setDepartment] = useState('')
+  const [departments, setDepartments] = useState([])
+
+  const router = useRouter()
+
+  useEffect(() => {
+    fetch('/api/user?filter=department').then(res => res.json()).then(dept => setDepartments(dept))
+  }, [])
 
   function proceedEntry(e) {
     e.preventDefault()
@@ -32,15 +42,17 @@ const NewEntry = () => {
               <div className='w-full flex flex-col gap-2'>
                 <label htmlFor='employeeName' className='text-slate-400'>Employee Name</label>
                 <input type="text" name="employeeName" id="employeeName" required
-                  className='w-full bg-accent rounded-md p-3 ring-2 ring-pink font-bold text-white ring-offset-pink' />
+                onChange={(e) => { setEmployeeName(e.target.value) }} value={employeeName}
+                className='w-full bg-accent rounded-md p-3 ring-2 ring-pink font-bold text-white ring-offset-pink' />
               </div>
               <div className='w-full flex flex-col gap-2'>
                 <label className='text-slate-400'>Department</label>
                 <select name="department" id="department" required
+                  onChange={(e) => { setDepartment(e.target.value) }} value={department}
                   className='select select-secondary w-full font-bold bg-accent text-white'>
                   <option value="" disabled selected>Choose an option</option>
                   {
-                    ['IT', 'HR', 'Finance', 'Sales', 'Marketing'].map(dept => (
+                    departments.map(dept => (
                       <option value={dept} key={dept}>{dept}</option>
                     ))
                   }
@@ -75,11 +87,21 @@ const NewEntry = () => {
                     'Cors': 'no-cors'
                   },
                 }).then(data => {
-                  console.log("Got data => ", data)
-                  setLoading(false)
+                  console.log("Successfully adding employee image to server")
                 })
               } catch (error) {
-                console.log("Error => ", error)
+                console.log("Server Error => ", error)
+              }
+
+              try {
+                await fetch(`/api/addEmployee?id=${employeeCode}&name=${employeeName}&department=${department}`)
+                    .then(data => {
+                    console.log("Successfully added employee to db")
+                    setLoading(false)
+                    router.push('/dashboard')
+                })
+              } catch (error) {
+                console.log("Database Error => ", error)
               }
               console.log("Uploaded image")
             }} />

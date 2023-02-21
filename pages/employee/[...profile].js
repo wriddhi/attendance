@@ -1,10 +1,11 @@
-import Header from '@/components/utils/Header'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 import ProfileView from '@/components/ProfileView'
 
-export default function Profile({employee}) {
+import { createClient } from '@supabase/supabase-js'
 
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY)
+
+export default function Profile({employee}) {
   return (
     <>
       <Head>
@@ -13,7 +14,7 @@ export default function Profile({employee}) {
         <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ProfileView details={employee.details}/>
+      <ProfileView details={employee}/>
     </>
   )
 }
@@ -22,8 +23,7 @@ export async function getServerSideProps(req, res) {
 
   const { query } = req
   const code = query.profile[0]
-  const response = await fetch('http://localhost:3000/api/user?employeeCode='+code)
-  const employee = await response.json()
+  const { data: employee, error } = await supabase.from("employee").select("*").eq("id", code).single()
   return {
     props: {employee}, // will be passed to the page component as props
   }

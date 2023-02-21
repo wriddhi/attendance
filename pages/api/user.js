@@ -41,8 +41,6 @@ export default function handler(req, res) {
     return
   }
 
-
-
   const allWorkers = [
     ...departments.map((department, index) => {
       return (

@@ -1,26 +1,33 @@
 import { useState, useEffect, useRef } from 'react'
 import ViewHeader from '../utils/ViewHeader'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import VideoCam from '../utils/VideoCam'
 import Spinner from '../utils/Spinner'
 import axios from 'axios'
 import Camera from '../utils/Camera'
 
-const Confirm = ({ id }) => {
+const Confirm = ({ id, shift, stage, setStage }) => {
+
 
   if (!id) {
     return <div className='w-full text-center my-10 mx-auto text-white'>User not found</div>
   }
 
+  const router = useRouter()
   const [user, setUser] = useState(null)
-  const preview = user ? 'https://xsgames.co/randomusers/avatar.php?g=male' : null
+  const [preview, setPreview] = useState(null)
+  const confirmRef = useRef(null)
+
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
   useEffect(() => {
     fetch(`/api/getUser?id=${id}`).then(res => res.json()).then(data => {
       setUser(data)
     })
-
+    fetch(`/api/getImage?id=${id}`).then(res => res.json()).then(data => {
+      setPreview(data.publicUrl)
+    })
   }, [])
 
   return (
@@ -28,7 +35,7 @@ const Confirm = ({ id }) => {
       {user ? (
         <>
           <div className='text-white w-11/12 mx-auto mb-4'>
-            <img className='rounded-full h-32 mx-auto' src={preview} alt="Img" />
+            <img className='rounded-full h-32 w-32 mx-auto' src={preview} alt="Img" />
           </div>
           <div className='flex flex-col gap-1 w-11/12'>
             <span className='text-pink font-bold text-lg'>Employee ID</span>
@@ -85,8 +92,22 @@ const Confirm = ({ id }) => {
             </select>
           </div>
           <div className='flex gap-4 items-center w-11/12 mt-8 font-bold'>
-              <button className='text-white outline outline-1 outline-white rounded-md p-2 w-4/6'>Cancel</button>
-              <button className='text-white bg-pink rounded-md p-2 w-4/6'>Confirm</button>
+            <button className='text-white outline outline-1 outline-white rounded-md p-2 w-4/6'>Cancel</button>
+            <button onClick={() => {
+              confirmRef.current.checked = true
+            }} className='text-white bg-pink rounded-md p-2 w-4/6'>Confirm</button>
+          </div>
+
+          <input ref={confirmRef} type="checkbox" id="my-modal-6" className="modal-toggle" />
+          <div className="modal modal-bottom sm:modal-middle">
+            <div className="modal-box">
+              <h3 className="font-bold text-lg">Attendance taken successfully!</h3>
+              <p className="py-4">Would you like to continue taking more attendance?</p>
+              <div className="modal-action justify-between">
+                <label onClick={() => {router.push('/dashboard/')}} htmlFor="my-modal-6" className="btn bg-accent hover:bg-black">No</label>
+                <label onClick={() => {setStage(1)}} htmlFor="my-modal-6" className="btn bg-black hover:bg-pink">Yes</label>
+              </div>
+            </div>
           </div>
         </>
       ) : (
@@ -179,35 +200,7 @@ const Attendance = () => {
       }
       {
         stage === 2 &&
-        // <VideoCam action={{
-        //   label: "Upload", perform: async (video, loading, setLoading) => {
-        //     const formData = new FormData()
-        //     formData.append('video', video)
-        //     formData.append('submit', 'submit')
 
-        //     const url = `${process.env.NEXT_PUBLIC_FLASK_BASE_URI}predict`
-        //     console.log("Uploading video to ", url)
-        //     try {
-        //       alert(url)
-        //       // Fetching
-        //       await axios.post(url, formData, {
-        //         headers: {
-        //           'Cors': 'no-cors',
-        //         }
-        //       }).then(data => {
-        //         console.log("Got data => ", data)
-        //         setLoading(false)
-        //         setId(data.data.id)
-        //         setStage(3)
-        //       })
-        //     } catch (error) {
-        //       console.log("Error => ", error)
-        //       alert("Failed to connect to server")
-        //       setLoading(false)
-        //     }
-        //     console.log("Uploaded video")
-        //   }
-        // }} />
         <Camera label="Upload" action={async (imgSrc) => {
 
           const formData = new FormData()
@@ -234,7 +227,7 @@ const Attendance = () => {
       }
       {
         stage === 3 &&
-        <Confirm id={id} />
+        <Confirm id={id} shift={shift} stage={stage} setStage={setStage} />
       }
     </main>
   )

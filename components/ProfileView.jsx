@@ -69,10 +69,11 @@ export default function ProfileView({ details }) {
           </div>
         </div>
       </form>
-      <section className='flex flex-col justify-center items-center gap-3 w-10/12 mx-auto'>
+      <section className='flex flex-col justify-center items-center gap-3 w-10/12 mx-auto py-6'>
         {
           Object.keys(employee).map((key, index) => {
             return (
+              employee[key] &&
               <DetailsInput key={index} label={key} value={employee[key]} onChange={handleInputChange} />
             )
           })
