@@ -48,35 +48,39 @@ const Confirm = ({ id, shift, stage, setStage }) => {
           <div className='flex flex-col gap-2 w-11/12'>
             <span className='text-pink font-bold text-lg'>Date of Birth</span>
             <span className='text-white bg-accent p-2 rounded-lg'>
-              {user.dob.split('-')[2]} &nbsp;
-              {months[parseInt(user.dob.split('-')[1]) - 1]}, &nbsp;
-              {user.dob.split('-')[0]}
+              {
+                user.dob ? (
+                  user.dob.split('-')[2] + " " + months[parseInt(user.dob.split('-')[1]) - 1] + " " + user.dob.split('-')[0]
+                ) : "N/A"
+              }
             </span>
           </div>
           <div className='flex flex-col gap-2 w-11/12'>
             <span className='text-pink font-bold text-lg'>Gender</span>
             <span className='text-white bg-accent p-2 rounded-lg'>
-              {user.gender}
+              {user.gender ? user.gender : "N/A"}
             </span>
           </div>
           <div className='flex flex-col gap-2 w-11/12'>
             <span className='text-pink font-bold text-lg'>Department</span>
             <span className='text-white bg-accent p-2 rounded-lg'>
-              {user.dept_no}
+              {user.department}
             </span>
           </div>
           <div className='flex flex-col gap-2 w-11/12'>
             <span className='text-pink font-bold text-lg'>Phone</span>
             <span className='text-white bg-accent p-2 rounded-lg'>
-              {user.phone}
+              {user.phone ? user.phone : "N/A"}
             </span>
           </div>
           <div className='flex flex-col gap-2 w-11/12'>
             <span className='text-pink font-bold text-lg'>Date of Joining</span>
             <span className='text-white bg-accent p-2 rounded-lg'>
-              {user.doj.split('-')[2]} &nbsp;
-              {months[parseInt(user.doj.split('-')[1]) - 1]}, &nbsp;
-              {user.doj.split('-')[0]}
+              {
+                user.dob ? (
+                  user.doj.split('-')[2] + " " + months[parseInt(user.doj.split('-')[1]) - 1] + " " + user.doj.split('-')[0]
+                ) : "N/A"
+              }
             </span>
           </div>
           <div className='flex flex-col gap-2 w-11/12'>
@@ -104,8 +108,8 @@ const Confirm = ({ id, shift, stage, setStage }) => {
               <h3 className="font-bold text-lg">Attendance taken successfully!</h3>
               <p className="py-4">Would you like to continue taking more attendance?</p>
               <div className="modal-action justify-between">
-                <label onClick={() => {router.push('/dashboard/')}} htmlFor="my-modal-6" className="btn bg-accent hover:bg-black">No</label>
-                <label onClick={() => {setStage(1)}} htmlFor="my-modal-6" className="btn bg-black hover:bg-pink">Yes</label>
+                <label onClick={() => { router.push('/dashboard/') }} htmlFor="my-modal-6" className="btn bg-accent hover:bg-black">No</label>
+                <label onClick={() => { setStage(1) }} htmlFor="my-modal-6" className="btn bg-black hover:bg-pink">Yes</label>
               </div>
             </div>
           </div>

@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 
   const modifiedUsers = await Promise.all(
     users.map(async (user) => {
-      const {data: department} = await supabase.from('department').select('description').eq('dept_no', user.dept_no)
+      const {data: department} = await supabase.from('department').select('description').eq('department', user.department)
       const { description } = department[0]
       return { ...user, department: description }
     })
