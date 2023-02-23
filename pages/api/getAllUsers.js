@@ -8,7 +8,6 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 
 export default async function handler(req, res) {
   const { data : users, error } = await supabase.from('employee').select('*')
-
   res.status(200).json(users)
   return
 }

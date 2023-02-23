@@ -12,6 +12,7 @@ const NewEntry = () => {
   const [employeeCode, setEmployeeCode] = useState('')
   const [employeeName, setEmployeeName] = useState('')
   const [department, setDepartment] = useState('')
+  const [occupation, setOccupation] = useState('')
   const [departments, setDepartments] = useState([])
 
   const router = useRouter()
@@ -54,6 +55,19 @@ const NewEntry = () => {
                   {
                     departments.map(dept => (
                       <option value={dept} key={dept}>{dept}</option>
+                    ))
+                  }
+                </select>
+              </div>
+              <div className='w-full flex flex-col gap-2'>
+                <label className='text-slate-400'>Occupation</label>
+                <select name="department" id="department" required
+                  onChange={(e) => { setOccupation(e.target.value) }} value={occupation}
+                  className='select select-secondary w-full font-bold bg-accent text-white'>
+                  <option value="" disabled selected>Choose an option</option>
+                  {
+                    ["Operator", "Helper", "Other"].map(occ => (
+                      <option value={occ} key={occ}>{occ}</option>
                     ))
                   }
                 </select>

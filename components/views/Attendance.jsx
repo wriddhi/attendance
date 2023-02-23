@@ -9,7 +9,6 @@ import Camera from '../utils/Camera'
 
 const Confirm = ({ id, shift, stage, setStage }) => {
 
-
   if (!id) {
     return <div className='w-full text-center my-10 mx-auto text-white'>User not found</div>
   }
@@ -17,7 +16,9 @@ const Confirm = ({ id, shift, stage, setStage }) => {
   const router = useRouter()
   const [user, setUser] = useState(null)
   const [preview, setPreview] = useState(null)
+  const [occupation, setOccupation] = useState('')
   const confirmRef = useRef(null)
+  const [status, setStatus] = useState('')
 
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
@@ -85,7 +86,7 @@ const Confirm = ({ id, shift, stage, setStage }) => {
           </div>
           <div className='flex flex-col gap-2 w-11/12'>
             <span className='text-pink font-bold text-lg'>Occupation</span>
-            <select name="occupation" id="occupation" required
+            <select name="occupation" id="occupation" required value={occupation} onChange={e => setOccupation(e.target.value)}
               className='select select-secondary w-full font-bold bg-accent text-white'>
               <option value="" disabled selected>Select occupation</option>
               {
@@ -97,15 +98,28 @@ const Confirm = ({ id, shift, stage, setStage }) => {
           </div>
           <div className='flex gap-4 items-center w-11/12 mt-8 font-bold'>
             <button className='text-white outline outline-1 outline-white rounded-md p-2 w-4/6'>Cancel</button>
-            <button onClick={() => {
-              confirmRef.current.checked = true
+            <button onClick={async () => {
+              await fetch('/api/setAttendance', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                  id: user.id,
+                  shift: shift,
+                  occupation: occupation
+                })
+              }).then(res => res.json()).then(data => {
+                setStatus(data.status)
+                confirmRef.current.checked = true
+              })
             }} className='text-white bg-pink rounded-md p-2 w-4/6'>Confirm</button>
           </div>
 
           <input ref={confirmRef} type="checkbox" id="my-modal-6" className="modal-toggle" />
           <div className="modal modal-bottom sm:modal-middle">
             <div className="modal-box">
-              <h3 className="font-bold text-lg">Attendance taken successfully!</h3>
+              <h3 className="font-bold text-lg">{status}!</h3>
               <p className="py-4">Would you like to continue taking more attendance?</p>
               <div className="modal-action justify-between">
                 <label onClick={() => { router.push('/dashboard/') }} htmlFor="my-modal-6" className="btn bg-accent hover:bg-black">No</label>
