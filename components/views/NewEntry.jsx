@@ -43,8 +43,8 @@ const NewEntry = () => {
               <div className='w-full flex flex-col gap-2'>
                 <label htmlFor='employeeName' className='text-slate-400'>Employee Name</label>
                 <input type="text" name="employeeName" id="employeeName" required
-                onChange={(e) => { setEmployeeName(e.target.value) }} value={employeeName}
-                className='w-full bg-accent rounded-md p-3 ring-2 ring-pink font-bold text-white ring-offset-pink' />
+                  onChange={(e) => { setEmployeeName(e.target.value) }} value={employeeName}
+                  className='w-full bg-accent rounded-md p-3 ring-2 ring-pink font-bold text-white ring-offset-pink' />
               </div>
               <div className='w-full flex flex-col gap-2'>
                 <label className='text-slate-400'>Department</label>
@@ -108,17 +108,22 @@ const NewEntry = () => {
               }
 
               try {
-                await fetch(`/api/addEmployee?id=${employeeCode}&name=${employeeName}&department=${department}`)
-                    .then(data => {
-                    console.log("Successfully added employee to db")
-                    setLoading(false)
-                    router.push('/dashboard')
-                })
-              } catch (error) {
-                console.log("Database Error => ", error)
-              }
-              console.log("Uploaded image")
-            }} />
+                formData.append('name', employeeName)
+                formData.append('department', department)
+                formData.append('occupation', occupation)
+
+                const res = await axios.post('/api/addEmployee', formData, {
+                  headers: {
+                    'Content-Type': 'multipart/form-data'
+                  }
+                }).then(data => data.json())
+
+                } catch (error) {
+                  console.log("Database Error => ", error)
+                }
+                setLoading(false)
+                console.log("Uploaded image")
+              }} />
           </section>
       }
     </main>
