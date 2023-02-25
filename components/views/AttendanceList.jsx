@@ -36,7 +36,7 @@ const AttendanceList = () => {
 
   useEffect(() => {
     setLoading(true)
-    fetch('/api/user')
+    fetch('/api/getAttendance')
       .then((res) => res.json())
       .then((data) => {
         setData(data)

@@ -8,7 +8,6 @@ const supabase = createClient(
 export default async function handler(req, res) {
 
   const { data: url, error } = supabase.storage.from('faces').getPublicUrl(req.query.id+'.jpg')
-  console.log(url, error)
   res.status(200).json(url)
 }
 

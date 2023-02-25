@@ -4,7 +4,21 @@ import { useRouter } from 'next/router'
 import ViewHeader from '../utils/ViewHeader'
 import Camera from '../utils/Camera'
 
+import { encode } from 'base64-arraybuffer'
+
 import axios from 'axios'
+
+function getBase64(file) {
+  const reader = new FileReader()
+  reader.readAsDataURL(file)
+  reader.onload = function () {
+    console.log(reader.result)
+  }
+  reader.onerror = function (error) {
+    console.log('Error: ', error)
+  }
+}
+
 
 const NewEntry = () => {
 
@@ -89,6 +103,8 @@ const NewEntry = () => {
           <section className={`${stage == 2 ? "flex" : "hidden"}`}>
             <Camera label={'Add'} action={async (imgSrc, loading, setLoading) => {
               const formData = new FormData()
+              console.log(formData)
+              console.log(employeeCode, employeeName, department, occupation)
               formData.append('image', imgSrc)
               formData.append('id', employeeCode)
               formData.append('submit', 'submit')
@@ -108,22 +124,19 @@ const NewEntry = () => {
               }
 
               try {
-                formData.append('name', employeeName)
-                formData.append('department', department)
-                formData.append('occupation', occupation)
-
-                const res = await axios.post('/api/addEmployee', formData, {
-                  headers: {
-                    'Content-Type': 'multipart/form-data'
-                  }
-                }).then(data => data.json())
-
-                } catch (error) {
-                  console.log("Database Error => ", error)
-                }
-                setLoading(false)
-                console.log("Uploaded image")
-              }} />
+                const res = await axios.post('/api/addEmployee', {
+                  id: employeeCode,
+                  name: employeeName,
+                  department: department,
+                  occupation: occupation,
+                  image: encode(await imgSrc.arrayBuffer())
+                })
+              } catch (error) {
+                console.log("Database Error => ", error)
+              }
+              setLoading(false)
+              console.log("Uploaded image")
+            }} />
           </section>
       }
     </main>
