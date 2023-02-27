@@ -35,7 +35,7 @@ const AttendanceList = () => {
   const [dateFilter, setDateFilter] = useState((new Date()).toISOString().split('T')[0])
   const [shiftFilter, setShiftFilter] = useState('all')
 
-  const [data, setData] = useState(null)
+  const [data, setData] = useState([])
 
   useEffect(() => {
     setLoading(true)
