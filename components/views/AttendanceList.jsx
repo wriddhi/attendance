@@ -39,6 +39,7 @@ const AttendanceList = () => {
 
   useEffect(() => {
     setLoading(true)
+    setData([])
     fetch(`/api/getAttendance?date=${dateFilter}&shift=${shiftFilter}`)
       .then((res) => res.json())
       .then((data) => {
@@ -56,7 +57,7 @@ const AttendanceList = () => {
           <input name="date" type="date" value={dateFilter} onChange={(e) => { setDateFilter(e.target.value) }} className='input input-bordered input-secondary bg-accent text-white w-full' />
           <label htmlFor="department" className="text-white w-full font-bold">Select department</label>
           <select onChange={(e) => { setShiftFilter(e.target.value) }} value={shiftFilter}
-            className="select select-secondary w-full max-w-xs bg-accent text-white">
+            className="select select-secondary w-full bg-accent text-white">
             <option value="all" selected>All</option>
             {
               ["A1", "A2", "B1", "B2", "C1", "C2", "D1", "D2"].map((shift) => {
