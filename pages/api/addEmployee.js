@@ -25,7 +25,6 @@ export default async function handler(req, res) {
     return
   }
 
-
   const { data: img, error: imgerr } = await supabase.storage.from("faces").upload(`${id}.jpg`, decode(image), {
     contentType: 'image/jpg'
   })

@@ -99,8 +99,7 @@ const EditEmployee = () => {
             {(!search && filter === "all") && data.map((employee) => (<EmployeeCard employee={employee} key={employee.id} />))}
 
             {search && filter == "all" && data.map((employee) => {
-              // return (employee.employeeName.toLowerCase().includes(search.toLowerCase()) ?
-              return (employee.employeeName.toLowerCase().indexOf(search.toLowerCase()) == 0 ?
+              return (employee.fullname.toLowerCase().indexOf(search.toLowerCase()) == 0 ?
                 <EmployeeCard employee={employee} key={employee.id} />
                 : null)
             })}

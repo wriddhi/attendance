@@ -47,10 +47,15 @@ const VerifyAttendance = () => {
           <div className="modal-box">
             <h3 className="font-bold text-lg">{verified ? "Verified" : "Unverified"}!</h3>
             <p className="py-4">{verified ? "The attendance for this employee has been taken today" : "The attendance for this employee has not been taken today"}</p>
-            <div className="modal-action">
+            <div className="modal-action flex justify-between items-center">
+              <label htmlFor="my-modal-6" className="btn bg-slate-200 text-black hover:bg-pink">
+                <Link href="/dashboard/">
+                  Leave
+                </Link>
+              </label>
               <label htmlFor="my-modal-6" className="btn bg-black hover:bg-pink">
-                <Link href="/dashboard">
-                  Ok
+                <Link href="/dashboard/attendance">
+                  Take
                 </Link>
               </label>
             </div>
