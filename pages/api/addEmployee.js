@@ -1,5 +1,4 @@
 import { createClient } from "@supabase/supabase-js"
-import formidable from "formidable"
 
 import { decode } from "base64-arraybuffer"
 
