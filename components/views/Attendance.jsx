@@ -35,86 +35,89 @@ const Confirm = ({ id, shift, stage, setStage }) => {
     <section className='w-11/12 m-auto flex flex-col justify-center items-center gap-4 py-10'>
       {user ? (
         <>
-          <div className='text-white w-11/12 mx-auto mb-4'>
-            <img className='rounded-full h-32 w-32 mx-auto' src={preview} alt="Img" />
-          </div>
-          <div className='flex flex-col gap-1 w-11/12'>
-            <span className='text-pink font-bold text-lg'>Employee ID</span>
-            <span className='text-white bg-accent p-2 rounded-lg'>{user.id}</span>
-          </div>
-          <div className='flex flex-col gap-2 w-11/12'>
-            <span className='text-pink font-bold text-lg'>Employee Name</span>
-            <span className='text-white bg-accent p-2 rounded-lg'>{user.fullname}</span>
-          </div>
-          <div className='flex flex-col gap-2 w-11/12'>
-            <span className='text-pink font-bold text-lg'>Date of Birth</span>
-            <span className='text-white bg-accent p-2 rounded-lg'>
-              {
-                user.dob ? (
-                  user.dob.split('-')[2] + " " + months[parseInt(user.dob.split('-')[1]) - 1] + " " + user.dob.split('-')[0]
-                ) : "N/A"
-              }
-            </span>
-          </div>
-          <div className='flex flex-col gap-2 w-11/12'>
-            <span className='text-pink font-bold text-lg'>Gender</span>
-            <span className='text-white bg-accent p-2 rounded-lg'>
-              {user.gender ? user.gender : "N/A"}
-            </span>
-          </div>
-          <div className='flex flex-col gap-2 w-11/12'>
-            <span className='text-pink font-bold text-lg'>Department</span>
-            <span className='text-white bg-accent p-2 rounded-lg'>
-              {user.department}
-            </span>
-          </div>
-          <div className='flex flex-col gap-2 w-11/12'>
-            <span className='text-pink font-bold text-lg'>Phone</span>
-            <span className='text-white bg-accent p-2 rounded-lg'>
-              {user.phone ? user.phone : "N/A"}
-            </span>
-          </div>
-          <div className='flex flex-col gap-2 w-11/12'>
-            <span className='text-pink font-bold text-lg'>Date of Joining</span>
-            <span className='text-white bg-accent p-2 rounded-lg'>
-              {
-                user.dob ? (
-                  user.doj.split('-')[2] + " " + months[parseInt(user.doj.split('-')[1]) - 1] + " " + user.doj.split('-')[0]
-                ) : "N/A"
-              }
-            </span>
-          </div>
-          <div className='flex flex-col gap-2 w-11/12'>
-            <span className='text-pink font-bold text-lg'>Occupation</span>
-            <select name="occupation" id="occupation" required value={occupation} onChange={e => setOccupation(e.target.value)}
-              className='select select-secondary w-full font-bold bg-accent text-white'>
-              <option value="" disabled selected>Select occupation</option>
-              {
-                ['Operator', 'Helper', 'Others'].map(occupation => (
-                  <option value={occupation} key={occupation}>{occupation}</option>
-                ))
-              }
-            </select>
-          </div>
-          <div className='flex gap-4 items-center w-11/12 mt-8 font-bold'>
-            <button className='text-white outline outline-1 outline-white rounded-md p-2 w-4/6'>Cancel</button>
-            <button onClick={async () => {
-              await fetch('/api/setAttendance', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                  id: user.id,
-                  shift: shift,
-                  occupation: occupation
-                })
-              }).then(res => res.json()).then(data => {
-                setStatus(data.status)
-                confirmRef.current.checked = true
+          <form onSubmit={async (e) => {
+            e.preventDefault()
+            await fetch('/api/setAttendance', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                id: user.id,
+                shift: shift,
+                occupation: occupation
               })
-            }} className='text-white bg-pink rounded-md p-2 w-4/6'>Confirm</button>
-          </div>
+            }).then(res => res.json()).then(data => {
+              setStatus(data.status)
+              confirmRef.current.checked = true
+            })
+          }} className="w-full flex flex-col justify-center items-center gap-6">
+            <div className='text-white w-11/12 mx-auto mb-4'>
+              <img className='rounded-full h-32 w-32 mx-auto' src={preview} alt="Img" />
+            </div>
+            <div className='flex flex-col gap-1 w-11/12'>
+              <span className='text-pink font-bold text-lg'>Employee ID</span>
+              <span className='text-white bg-accent p-2 rounded-lg'>{user.id}</span>
+            </div>
+            <div className='flex flex-col gap-2 w-11/12'>
+              <span className='text-pink font-bold text-lg'>Employee Name</span>
+              <span className='text-white bg-accent p-2 rounded-lg'>{user.fullname}</span>
+            </div>
+            <div className='flex flex-col gap-2 w-11/12'>
+              <span className='text-pink font-bold text-lg'>Date of Birth</span>
+              <span className='text-white bg-accent p-2 rounded-lg'>
+                {
+                  user.dob ? (
+                    user.dob.split('-')[2] + " " + months[parseInt(user.dob.split('-')[1]) - 1] + " " + user.dob.split('-')[0]
+                  ) : "N/A"
+                }
+              </span>
+            </div>
+            <div className='flex flex-col gap-2 w-11/12'>
+              <span className='text-pink font-bold text-lg'>Gender</span>
+              <span className='text-white bg-accent p-2 rounded-lg'>
+                {user.gender ? user.gender : "N/A"}
+              </span>
+            </div>
+            <div className='flex flex-col gap-2 w-11/12'>
+              <span className='text-pink font-bold text-lg'>Department</span>
+              <span className='text-white bg-accent p-2 rounded-lg'>
+                {user.department}
+              </span>
+            </div>
+            <div className='flex flex-col gap-2 w-11/12'>
+              <span className='text-pink font-bold text-lg'>Phone</span>
+              <span className='text-white bg-accent p-2 rounded-lg'>
+                {user.phone ? user.phone : "N/A"}
+              </span>
+            </div>
+            <div className='flex flex-col gap-2 w-11/12'>
+              <span className='text-pink font-bold text-lg'>Date of Joining</span>
+              <span className='text-white bg-accent p-2 rounded-lg'>
+                {
+                  user.dob ? (
+                    user.doj.split('-')[2] + " " + months[parseInt(user.doj.split('-')[1]) - 1] + " " + user.doj.split('-')[0]
+                  ) : "N/A"
+                }
+              </span>
+            </div>
+            <div className='flex flex-col gap-2 w-11/12'>
+              <span className='text-pink font-bold text-lg'>Occupation</span>
+              <select name="occupation" id="occupation" required value={occupation} onChange={e => setOccupation(e.target.value)}
+                className='select select-secondary w-full font-bold bg-accent text-white'>
+                <option value="" disabled selected>Select occupation</option>
+                {
+                  ['Manager', 'Workmen', 'Supervisor', 'Driver', 'Security'].map(occupation => (
+                    <option value={occupation} key={occupation}>{occupation}</option>
+                  ))
+                }
+              </select>
+            </div>
+            <div className='flex gap-4 items-center w-11/12 mt-8 font-bold'>
+              <button className='text-white outline outline-1 outline-white rounded-md p-2 w-4/6'>Cancel</button>
+              <button type='submit' className='text-white bg-pink rounded-md p-2 w-4/6'>Confirm</button>
+            </div>
+          </form>
 
           <input ref={confirmRef} type="checkbox" id="my-modal-6" className="modal-toggle" />
           <div className="modal modal-bottom sm:modal-middle">

@@ -7,7 +7,7 @@ const supabase = createClient(
 
 export default async function handler(req, res) {
 
-  const { id, shift } = req.body
+  const { id, shift, occupation } = req.body
 
   const date = new Date()
 
@@ -30,7 +30,8 @@ export default async function handler(req, res) {
   const { data: user, error } = await supabase.from("attendance").insert([{
     id: id,
     shift: shift,
-    date: date.toLocaleDateString()
+    date: date.toLocaleDateString(),
+    occupation: occupation
   }])
 
   if (!error) {

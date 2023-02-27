@@ -6,8 +6,10 @@ import Spinner from '../utils/Spinner'
 
 const AttendanceCard = ({ employee }) => {
 
-  const date = new Date()
-  const time = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+  const date = new Date(employee.date)
+  console.log(date)
+  // const time = date.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+  const time = employee.time
 
   return (
     <div className='w-full flex gap-4 p-4 bg-accent text-white rounded-md'>
@@ -20,6 +22,9 @@ const AttendanceCard = ({ employee }) => {
         <div className='flex justify-start items-center'>
           <span className='text-pink text-xs'> {employee.department} </span>
           <span className='text-pink text-xs ml-auto font-base'>{time}</span>
+        </div>
+        <div>
+          <span className='text-slate-300 text-xs font-medium'> {employee.occupation} </span>
         </div>
       </section>
       <div>
