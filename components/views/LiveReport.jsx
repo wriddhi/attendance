@@ -1,15 +1,29 @@
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import ViewHeader from '../utils/ViewHeader'
 
 const ShiftCard = ({ shift }) => {
 
-  const randomizer = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1) + min)
-  }
-
+  
   const time = new Date().toLocaleTimeString('en-US', { hour12: false, hour: "numeric", minute: "numeric" })
   const activeShift = (shift.start < time && shift.end > time)
+
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+
+    if(!activeShift) return
+
+    const interval = setInterval(async() => {
+      
+      const res = await fetch('/api/getLive?shift='+shift.id)
+      const data = await res.json()
+
+      setCount(data.count)
+    }, 10000)
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <div className='flex flex-col items-start justify-between w-11/12 p-4 mx-auto bg-accent text-white rounded-lg relative'>
       <h1 className='text-xl font-bold flex gap-4'>
@@ -23,7 +37,7 @@ const ShiftCard = ({ shift }) => {
         {
           activeShift ? (
             <i className='text-slate-300'>
-              {randomizer(150, 200)} / 200
+              {count}
             </i>
           ) : null
         }
