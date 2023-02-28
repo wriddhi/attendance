@@ -7,11 +7,9 @@ import xlsx from 'xlsx'
 const UploadData = () => {
 
   const [data, setData] = useState(null)
-  const fileRef = useRef()
 
   const handleUpload = async (e) => {
     e.preventDefault()
-
 
     const upload = await fetch('/api/uploadData', {
       method: 'POST',
@@ -19,8 +17,6 @@ const UploadData = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
-    }).then(res => {
-
     })
   }
 
