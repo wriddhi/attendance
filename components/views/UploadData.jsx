@@ -1,9 +1,8 @@
 import { DocumentArrowUpIcon } from '@heroicons/react/24/outline'
 import ViewHeader from '../utils/ViewHeader'
 import { useState, useRef } from 'react'
-
-import Papa from 'papaparse'
-import XLSX from 'xlsx'
+import csvtojson from 'csvtojson'
+import xlsx from 'xlsx'
 
 const UploadData = () => {
 
@@ -12,35 +11,32 @@ const UploadData = () => {
 
   const handleUpload = async (e) => {
     e.preventDefault()
+
+
+    const upload = await fetch('/api/uploadData', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }).then(res => {
+
+    })
   }
 
-  const handleFileConversion = (e) => {
+  const handleFileConversion = async (e) => {
 
     const file = e.target.files[0]
 
     console.log('Uploading file', file)
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const fileData = event.target.result;
-      const fileType = file.type;
-
-      if (fileType === 'text/csv') {
-        const results = Papa.parse(fileData, { header: true });
-        setJsonData(results.data)
-      } else if (fileType === 'application/vnd.ms-excel' || fileType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-        const workbook = XLSX.read(fileData, { type: 'binary' })
-        const sheetName = workbook.SheetNames[0]
-        const sheet = workbook.Sheets[sheetName]
-        const results = XLSX.utils.sheet_to_json(sheet)
-        setJsonData(results)
-      } else {
-        alert('Unsupported file format. Please upload a CSV or XLSX file.')
-      }
-    };
-    reader.readAsBinaryString(file)
+    if (file.type === 'text/csv') {
+      const csvData = await file.text()
+      const json = await csvtojson().fromString(csvData)
+      setData(json)
+      console.log(json)
+    }
   }
-
 
   return (
     <main className='w-screen min-h-screen bg-dark'>
@@ -57,9 +53,7 @@ const UploadData = () => {
             <DocumentArrowUpIcon className='h-5' />
           </button>
         </form>
-        {data && (
-          <pre>{JSON.stringify(data, null, 2)}</pre>
-        )}
+        
       </section>
     </main>
   )
