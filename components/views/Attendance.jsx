@@ -114,7 +114,9 @@ const Confirm = ({ id, shift, stage, setStage }) => {
               </select>
             </div>
             <div className='flex gap-4 items-center w-11/12 mt-8 font-bold'>
-              <button className='text-white outline outline-1 outline-white rounded-md p-2 w-4/6'>Cancel</button>
+              <button type="reset" className='text-white outline outline-1 outline-white rounded-md p-2 w-4/6'>
+                <Link href='/dashboard/'> Cancel </Link>
+              </button>
               <button type='submit' className='text-white bg-pink rounded-md p-2 w-4/6'>Confirm</button>
             </div>
           </form>
