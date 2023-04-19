@@ -3,7 +3,7 @@ import { SiStarship } from 'react-icons/si'
 import { signIn } from "next-auth/react"
 import { useRouter } from 'next/router'
 
-const Homepage = () => {
+const Homepage = ({ admin }) => {
 
   const usernameRef = useRef(null)
   const passwordRef = useRef(null)

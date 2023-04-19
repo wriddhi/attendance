@@ -1,0 +1,17 @@
+export const departments = [
+  "Batching and Preparing",
+  "Beaming",
+  "Boiler",
+  "Factory Mech",
+  "Finishing",
+  "General",
+  "Generator",
+  "Mill-Mech",
+  "Spinning",
+  "Warp Winding",
+  "Weaving-Hessian",
+  "Weaving-Sacking",
+  "Weaving-Timerate",
+  "Weft Winding",
+  "Work Shop",
+]

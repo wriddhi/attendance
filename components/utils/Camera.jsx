@@ -9,7 +9,7 @@ import Webcam from "react-webcam"
 const videoConstraints = {
   width: 400,
   height: 400,
-  facingMode: 'environment',
+  facingMode: 'user',
 }
 
 const dataURLToBlob = (dataURL) => {
@@ -24,10 +24,12 @@ const dataURLToBlob = (dataURL) => {
 }
 
 const Camera = ({ label, action }) => {
+
+  const webcamRef = useRef(null)
+
   const [imgSrc, setImgSrc] = useState(null)
   const [loading, setLoading] = useState(false)
   const [viewState, setViewState] = useState("video")
-  const webcamRef = useRef(null)
 
 
   const capture = useCallback(async (e) => {
@@ -41,15 +43,15 @@ const Camera = ({ label, action }) => {
     <main className="bg-dark w-screen h-84 overflow-hidden p-4 flex flex-col justify-center items-center gap-4">
       <section className="outline-2 outline-dashed outline-pink rounded-md mx-auto overflow-hidden aspect-square">
         {
-          viewState === "video" ?
-            <Webcam
+          viewState === "video"
+            ?
+            (<Webcam
               audio={false}
-              height={720}
               ref={webcamRef}
-              screenshotFormat="image/jpeg"
-              width={1280}
               videoConstraints={videoConstraints}
-            /> :
+              screenshotFormat="image/jpeg"
+            />)
+            :
             <img src={imgSrc} />
         }
 
@@ -57,7 +59,7 @@ const Camera = ({ label, action }) => {
 
       {
         viewState === "video" ?
-          <button onClick={capture} className="bg-pink text-white font-bold w-11/12 p-2 mx-auto rounded-md flex justify-center items-center gap-2" >
+          <button onClick={capture} className="bg-pink text-white font-bold w-full p-2 mx-auto rounded-md flex justify-center items-center gap-2" >
             Capture Photo
             <CameraIcon className="h-5 w-5" />
           </button>

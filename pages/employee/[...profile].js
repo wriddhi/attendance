@@ -25,6 +25,6 @@ export async function getServerSideProps(req, res) {
   const code = query.profile[0]
   const { data: employee, error } = await supabase.from("employee").select("*").eq("id", code).single()
   return {
-    props: {employee}, // will be passed to the page component as props
+    props: {employee},
   }
 }

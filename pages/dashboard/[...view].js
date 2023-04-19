@@ -23,17 +23,17 @@ export default function ViewPage() {
 
   const allViews = {
     "attendance": <Attendance/>,
-    "new-entry": <NewEntry/>,
-    "edit-employee": <EditEmployee/>,
-    "attendance-list": <AttendanceList/>,  
-    "upload-data": <UploadData/>,
-    "download-data": <DownloadData/>,
-    "attendance-report": <AttendanceReport/>,
-    "gate-attendance": <GateAttendance/>,
-    "export-attendance": <ExportAttendance/>,
-    "live-report": <LiveReport/>,
-    "verify-attendance": <VerifyAttendance/>,
-    "leave-application": <LeaveApplication/>
+    // "new-entry": <NewEntry/>,
+    // "edit-employee": <EditEmployee/>,
+    // "attendance-list": <AttendanceList/>,  
+    // "upload-data": <UploadData/>,
+    // "download-data": <DownloadData/>,
+    // "attendance-report": <AttendanceReport/>,
+    // "gate-attendance": <GateAttendance/>,
+    // "export-attendance": <ExportAttendance/>,
+    // "live-report": <LiveReport/>,
+    // "verify-attendance": <VerifyAttendance/>,
+    // "leave-application": <LeaveApplication/>
   }
 
   return (
