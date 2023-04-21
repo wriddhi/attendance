@@ -7,30 +7,8 @@ import Spinner from '../utils/Spinner'
 import axios from 'axios'
 import Camera from '../utils/Camera'
 
-import { shifts } from '@/data/shifts'
+import { getShift } from '@/data/shifts'
 import { departments } from '@/data/departments'
-
-function getShift() {
-
-  const time = new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata", hour12: false }).split(' ')[1].split(':')[0]
-
-  let activeShift = null
-
-  for (const key in shifts) {
-    const start = shifts[key].start.split(':')[0]
-    const end = shifts[key].end.split(':')[0]
-
-    console.log(start, end, time)
-
-    if (time[1] >= start && time[1] < end) {
-      activeShift = key
-      break
-    }
-  }
-
-  return activeShift
-
-}
 
 const Confirm = ({ id, shift, stage, setStage }) => {
 
@@ -44,8 +22,9 @@ const Confirm = ({ id, shift, stage, setStage }) => {
   const [occupation, setOccupation] = useState('')
   const confirmRef = useRef(null)
   const [status, setStatus] = useState('')
+  const [overtime, setOvertime] = useState(0)
 
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  // const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
   useEffect(() => {
     fetch(`/api/getUser?id=${id}`).then(res => res.json()).then(data => {
@@ -71,7 +50,8 @@ const Confirm = ({ id, shift, stage, setStage }) => {
               body: JSON.stringify({
                 id: user.id,
                 shift: shift,
-                occupation: occupation
+                allotedShift: user.shift,
+                overtime: overtime,
               })
             }).then(res => res.json()).then(data => {
               setStatus(data.status)
@@ -87,9 +67,9 @@ const Confirm = ({ id, shift, stage, setStage }) => {
             </div>
             <div className='flex flex-col gap-2 w-11/12'>
               <span className='text-pink font-bold text-lg'>Employee Name</span>
-              <span className='text-white bg-accent p-2 rounded-lg'>{user.fullname}</span>
+              <span className='text-white bg-accent p-2 rounded-lg'>{user.name}</span>
             </div>
-            <div className='flex flex-col gap-2 w-11/12'>
+            {/* <div className='flex flex-col gap-2 w-11/12'>
               <span className='text-pink font-bold text-lg'>Date of Birth</span>
               <span className='text-white bg-accent p-2 rounded-lg'>
                 {
@@ -104,14 +84,14 @@ const Confirm = ({ id, shift, stage, setStage }) => {
               <span className='text-white bg-accent p-2 rounded-lg'>
                 {user.gender ? user.gender : "N/A"}
               </span>
-            </div>
+            </div> */}
             <div className='flex flex-col gap-2 w-11/12'>
               <span className='text-pink font-bold text-lg'>Department</span>
               <span className='text-white bg-accent p-2 rounded-lg'>
                 {user.department}
               </span>
             </div>
-            <div className='flex flex-col gap-2 w-11/12'>
+            {/* <div className='flex flex-col gap-2 w-11/12'>
               <span className='text-pink font-bold text-lg'>Phone</span>
               <span className='text-white bg-accent p-2 rounded-lg'>
                 {user.phone ? user.phone : "N/A"}
@@ -126,8 +106,8 @@ const Confirm = ({ id, shift, stage, setStage }) => {
                   ) : "N/A"
                 }
               </span>
-            </div>
-            <div className='flex flex-col gap-2 w-11/12'>
+            </div> */}
+            {/* <div className='flex flex-col gap-2 w-11/12'>
               <span className='text-pink font-bold text-lg'>Occupation</span>
               <select name="occupation" id="occupation" required value={occupation} onChange={e => setOccupation(e.target.value)}
                 className='select select-secondary w-full font-bold bg-accent text-white'>
@@ -138,10 +118,26 @@ const Confirm = ({ id, shift, stage, setStage }) => {
                   ))
                 }
               </select>
-            </div>
+            </div> */}
+            {
+              shift !== user.shift && (
+                <div className='flex flex-col gap-2 w-11/12'>
+                  <label className='text-pink font-bold text-lg'>Overtime</label>
+                  <select onChange={(e) => { setOvertime((e.target.value).split(' ')[0]) }} name="overtime" id="overtime" required
+                    className='select select-secondary w-full font-bold bg-accent text-white'>
+                    <option value="" disabled selected>Select overtime duration</option>
+                    {
+                      [1, 2, 3, 4, 5, 6, 7, 8].map(time => (
+                        <option value={time} key={time}>{time} hours</option>
+                      ))
+                    }
+                  </select>
+                </div>
+              )
+            }
             <div className='flex gap-4 items-center w-11/12 mt-8 font-bold'>
-              <button type="reset" className='text-white outline outline-1 outline-white rounded-md p-2 w-4/6'>
-                <Link href='/dashboard/'> Cancel </Link>
+              <button onClick={() => { router.push('/dashboard') }} type="reset" className='text-white outline outline-1 outline-white rounded-md p-2 w-4/6'>
+                Cancel
               </button>
               <button type='submit' className='text-white bg-pink rounded-md p-2 w-4/6'>Confirm</button>
             </div>
@@ -174,8 +170,17 @@ const Attendance = () => {
   const [id, setId] = useState(null)
   const [department, setDepartment] = useState(null)
   const [shift, setShift] = useState(null)
-  // const shift = getShift()
-  // console.log(shift)
+
+  const [shifts, setShifts] = useState(getShift())
+
+  useEffect(() => {
+    setInterval(() => {
+      setShifts(getShift())
+    }, 1000)
+
+    return () => clearInterval()
+  }, [shifts])
+
 
   const proceedEntry = (e) => {
     e.preventDefault()
@@ -188,49 +193,58 @@ const Attendance = () => {
       <ViewHeader title="Attendance" />
       {
         stage === 1 &&
-        <section className={`w-11/12 mx-auto flex`}>
-          <form className='w-full flex flex-col gap-8 mt-8' onSubmit={proceedEntry} >
-            <div className='w-full flex flex-col gap-2'>
-              <label className='text-slate-400'>Department</label>
-              <select onChange={(e) => { setDepartment(e.target.value) }} name="department" id="department" required
-                className='select select-secondary w-full font-bold bg-accent text-white'>
-                <option value="" disabled selected>Select a department</option>
-                {
-                  departments.map(dept => (
-                    <option value={dept} key={dept}>{dept}</option>
-                  ))
-                }
-              </select>
-            </div>
-            <div className='w-full flex flex-col gap-2'>
-              <label className='text-slate-400'>Shift</label>
-              <select onChange={(e) => { setShift(e.target.value) }} name="shift " id="shift" required
-                className='select select-secondary w-full font-bold bg-accent text-white'>
-                <option value="" disabled selected>Select a shift</option>
-                {
-                  Object.keys(shifts).map((shift, index) => (
-                    <option value={shift} key={index}>
-                      {shift}
-                    </option>
-                  ))
-                }
-              </select>
-            </div>
-            {/* <div className='w-full flex flex-col gap-2'>
+        <section className={`w-11/12 mx-auto flex justify-start items-start h-full`}>
+          {
+            shifts.length > 0 ? (
+              <form className='w-full flex flex-col gap-8 mt-8' onSubmit={proceedEntry} >
+                <div className='w-full flex flex-col gap-2'>
+                  <label className='text-slate-400'>Department</label>
+                  <select onChange={(e) => { setDepartment(e.target.value) }} name="department" id="department" required
+                    className='select select-secondary w-full font-bold bg-accent text-white'>
+                    <option value="" disabled selected>Select a department</option>
+                    {
+                      departments.map(dept => (
+                        <option value={dept} key={dept}>{dept}</option>
+                      ))
+                    }
+                  </select>
+                </div>
+                <div className='w-full flex flex-col gap-2'>
+                  <label className='text-slate-400'>Shift</label>
+                  <select onChange={(e) => { setShift(e.target.value) }} name="shift " id="shift" required
+                    className='select select-secondary w-full font-bold bg-accent text-white'>
+                    <option value="" disabled selected>Select a shift</option>
+                    {
+                      shifts.map((shift, index) => (
+                        <option value={shift} key={index}>
+                          {shift}
+                        </option>
+                      ))
+                    }
+                  </select>
+                </div>
+                {/* <div className='w-full flex flex-col gap-2'>
               <label className='text-slate-400'>Shift</label>
               <input disabled value={shift} type="text" className='input input-secondary w-full font-bold disabled:bg-accent disabled:text-slate-400' />
             </div> */}
-            <div className='w-full flex justify-evenly items-center gap-4'>
-              <button type='reset' className='w-full bg-dark border-solid border-2 border-white text-white p-3 rounded-md font-bold'>
-                <Link href='/dashboard'>
-                  Cancel
-                </Link>
-              </button>
-              <button type='submit' className='w-full bg-pink text-white p-3 rounded-md font-bold' >
-                Confirm
-              </button>
-            </div>
-          </form>
+                <div className='w-full flex justify-evenly items-center gap-4'>
+                  <button type='reset' className='w-full bg-dark border-solid border-2 border-white text-white p-3 rounded-md font-bold'>
+                    <Link href='/dashboard'>
+                      Cancel
+                    </Link>
+                  </button>
+                  <button type='submit' className='w-full bg-pink text-white p-3 rounded-md font-bold' >
+                    Confirm
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <div className='text-slate-500 text-lg text-center p-6 mt-40 outline w-2/3 mx-auto'>
+                Attendance time for this shift has ended.
+              </div>
+            )
+          }
+
         </section>
       }
       {
