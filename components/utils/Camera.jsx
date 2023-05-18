@@ -9,7 +9,7 @@ import Webcam from "react-webcam"
 const videoConstraints = {
   width: 400,
   height: 400,
-  facingMode: 'user',
+  facingMode: 'environment',
 }
 
 const dataURLToBlob = (dataURL) => {
